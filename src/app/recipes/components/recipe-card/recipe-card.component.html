@@ -1,0 +1,14 @@
+<div class="card h-100">
+  <img
+    [src]="recipe.cover_img_url"
+    class="card-img-top img-fluid"
+    alt="{{ recipe.title }}"
+    style="height: 200px; object-fit: cover"
+  />
+  <div class="card-body">
+    <h5 class="card-title">
+      <a [routerLink]="['/recipes', recipe.id]">{{ recipe.title }}</a>
+    </h5>
+    <p class="card-text">{{ recipe.description }}</p>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<ng-template #loading>
+  <div class="progress-bar">
+    <div class="progress-bar-value"></div>
+  </div>
+</ng-template>
+
+<div class="recommendations container mt-5" *ngIf="recipes; else loading">
+  <h2 class="text-center mb-4">Recommended Recipes</h2>
+  <div class="row">
+    <div class="col-md-4 mb-4" *ngFor="let recipe of recipes">
+      <app-recipe-card [recipe]="recipe" />
+    </div>
+  </div>
+</div>

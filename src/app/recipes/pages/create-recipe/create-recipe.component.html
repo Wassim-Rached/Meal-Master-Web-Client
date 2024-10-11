@@ -1,0 +1,201 @@
+<div class="container mt-5">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input
+        type="text"
+        id="title"
+        class="form-control"
+        formControlName="title"
+        placeholder="Enter recipe title"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        class="form-control"
+        formControlName="description"
+        rows="3"
+        placeholder="Enter recipe description"
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="cover_img_url">Cover Image URL</label>
+      <input
+        type="text"
+        id="cover_img_url"
+        class="form-control"
+        formControlName="cover_img_url"
+        placeholder="Enter cover image URL"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="cooking_time">Cooking Time (minutes)</label>
+      <input
+        type="number"
+        id="cooking_time"
+        class="form-control"
+        formControlName="cooking_time"
+        placeholder="Enter cooking time"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="serving_size">Serving Size</label>
+      <input
+        type="number"
+        id="serving_size"
+        class="form-control"
+        formControlName="serving_size"
+        placeholder="Enter serving size"
+      />
+    </div>
+
+    <div formArrayName="instructions" class="mt-4">
+      <h5>Instructions</h5>
+      <div
+        *ngFor="
+          let instruction of instructionsFormArray.controls;
+          let i = index
+        "
+        [formGroupName]="i"
+        class="form-group border p-3 mb-3 rounded"
+      >
+        <label>Instruction {{ i + 1 }}</label>
+        <div class="form-row">
+          <div class="col-md-2">
+            <label for="step_number_{{ i }}">Step Number</label>
+            <input
+              type="number"
+              id="step_number_{{ i }}"
+              class="form-control"
+              formControlName="step_number"
+              placeholder="Step Number"
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="text_{{ i }}">Instruction Text</label>
+            <textarea
+              id="text_{{ i }}"
+              class="form-control"
+              formControlName="text"
+              rows="2"
+              placeholder="Instruction Text"
+            ></textarea>
+          </div>
+          <div class="col-md-2">
+            <label for="time_estimate_{{ i }}">Time Estimate (minutes)</label>
+            <input
+              type="number"
+              id="time_estimate_{{ i }}"
+              class="form-control"
+              formControlName="time_estimate"
+              placeholder="Time Estimate (minutes)"
+            />
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <button
+              type="button"
+              class="btn btn-danger btn-block"
+              (click)="removeInstruction(i)"
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="btn btn-primary mt-2"
+        (click)="addInstruction()"
+      >
+        Add Instruction
+      </button>
+    </div>
+
+    <div formArrayName="recipeIngredients" class="mt-4">
+      <h5>Ingredients</h5>
+      <div
+        *ngFor="
+          let recipeIngredient of recipeIngredientsFormArray.controls;
+          let i = index
+        "
+        [formGroupName]="i"
+        class="form-group border p-3 mb-3 rounded"
+      >
+        <label>Ingredient {{ i + 1 }}</label>
+        <div class="form-row">
+          <div class="col-md-3">
+            <label for="amount_{{ i }}">Amount</label>
+            <input
+              type="number"
+              id="amount_{{ i }}"
+              class="form-control"
+              formControlName="amount"
+              placeholder="Amount"
+            />
+          </div>
+          <div class="col-md-4">
+            <label for="ingredientId_{{ i }}">Ingredient</label>
+            <select
+              id="ingredientId_{{ i }}"
+              class="form-control"
+              formControlName="ingredientId"
+            >
+              <option
+                *ngFor="let ingredient of availableIngredients"
+                [value]="ingredient.id"
+              >
+                {{ ingredient.name }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="measurementUnitId_{{ i }}">Measurement Unit</label>
+            <select
+              id="measurementUnitId_{{ i }}"
+              class="form-control"
+              formControlName="measurementUnitId"
+            >
+              <option
+                *ngFor="let unit of availableMeasurementUnits"
+                [value]="unit.id"
+              >
+                {{ unit.name }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button
+              type="button"
+              class="btn btn-danger btn-block"
+              (click)="removeRecipeIngredient(i)"
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="btn btn-primary mt-2"
+        (click)="addRecipeIngredient()"
+      >
+        Add Ingredient
+      </button>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-success mt-3 btn-block"
+      [disabled]="!formGroup.valid || isCreating"
+    >
+      <span *ngIf="isCreating" class="spinner-border spinner-border-sm"></span>
+      {{ isCreating ? "Creating..." : "Create Recipe" }}
+    </button>
+  </form>
+</div>

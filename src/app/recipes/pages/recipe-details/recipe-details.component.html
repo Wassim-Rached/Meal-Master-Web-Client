@@ -1,0 +1,69 @@
+<ng-container *ngIf="recipe === null; else page">
+  <app-not-found />
+</ng-container>
+
+<ng-template #page>
+  <ng-template #loading>
+    <div class="progress-bar">
+      <div class="progress-bar-value"></div>
+    </div>
+  </ng-template>
+
+  <ng-container *ngIf="recipe; else loading">
+    <div class="container mt-5 recipe-details">
+      <div class="row">
+        <div class="col-md-8">
+          <h1 class="display-4">{{ recipe.title }}</h1>
+          <img
+            *ngIf="recipe.cover_img_url"
+            [src]="recipe.cover_img_url"
+            class="img-fluid rounded mb-4 shadow-sm"
+            alt="{{ recipe.title }} cover image"
+          />
+          <p class="lead">{{ recipe.description }}</p>
+
+          <div class="recipe-meta mb-4">
+            <p>
+              <strong>Cooking Time:</strong> {{ recipe.cooking_time }} minutes
+            </p>
+            <p>
+              <strong>Serving Size:</strong> {{ recipe.serving_size }} people
+            </p>
+          </div>
+
+          <h2 class="h4">Ingredients</h2>
+          <ul class="list-group mb-4">
+            <li
+              *ngFor="let ingredient of recipe.recipeIngredients"
+              class="list-group-item d-flex justify-content-between align-items-center"
+            >
+              <span
+                >{{ ingredient.amount }}
+                {{ ingredient.measurementUnit.name }} of
+                {{ ingredient.ingredient.name }}</span
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-md-4">
+          <h2 class="h4">Instructions</h2>
+          <ol class="list-group list-group-numbered">
+            <li
+              *ngFor="let instruction of recipe.instructions"
+              class="list-group-item d-flex justify-content-between align-items-start"
+            >
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">Step {{ instruction.step_number }}</div>
+                {{ instruction.text }}
+              </div>
+              <span class="badge bg-primary rounded-pill"
+                >{{ instruction.time_estimate }} min</span
+              >
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ng-template>
