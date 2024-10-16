@@ -1,9 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Ingredient } from './ingredients.service';
 import { MeasurementUnit } from './measurments-units.service';
 import { environment } from '../../../environments/environment';
+import { Page } from '../../../types';
+import { FormValue } from '../../recipes/pages/search-and-filter/search-and-filter.component';
 
 export interface Recipe {
   id: string;
@@ -30,6 +32,18 @@ export interface RecipeIngredient {
   measurementUnit: MeasurementUnit;
 }
 
+export interface RecipeSearchParams {
+  search?: string;
+  minCookingTime?: number;
+  maxCookingTime?: number;
+  minServingSize?: number;
+  maxServingSize?: number;
+  sort: string;
+  tags?: string;
+  page?: number;
+  size?: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -44,10 +58,33 @@ export class RecipesService {
     );
   }
 
-  searchRecipes(title: string): Observable<Recipe[]> {
-    return this.http.get<Recipe[]>(
-      `${this.BASE_URL}/api/recipes/search?title=${title}`
-    );
+  searchRecipes(searchParams: RecipeSearchParams): Observable<Page<Recipe>> {
+    const {
+      search = '',
+      maxCookingTime,
+      minCookingTime,
+      maxServingSize,
+      minServingSize,
+      sort,
+      tags,
+      page,
+      size,
+    } = searchParams;
+
+    const params = new HttpParams()
+      .set('search', search)
+      .set('maxCookingTime', maxCookingTime?.toString() || '')
+      .set('minCookingTime', minCookingTime?.toString() || '')
+      .set('maxServingSize', maxServingSize?.toString() || '')
+      .set('minServingSize', minServingSize?.toString() || '')
+      .set('sort', sort)
+      .set('tags', tags || '')
+      .set('page', page?.toString() || '')
+      .set('size', size?.toString() || '4');
+
+    return this.http.get<Page<Recipe>>(`${this.BASE_URL}/api/recipes/search`, {
+      params,
+    });
   }
 
   createRecipe(recipe: CreateRecipeRequestDTO): Observable<string> {

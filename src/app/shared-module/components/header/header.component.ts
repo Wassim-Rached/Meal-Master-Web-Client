@@ -12,9 +12,9 @@ export class HeaderComponent {
   constructor(private router: Router) {}
 
   onSearch(input: HTMLInputElement) {
-    const title = input.value;
+    const search = input.value;
     this.router.navigate(['/recipes/search'], {
-      queryParams: { title },
+      queryParams: { search },
     });
 
     // clear the input

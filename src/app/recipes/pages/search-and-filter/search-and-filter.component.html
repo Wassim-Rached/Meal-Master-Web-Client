@@ -5,41 +5,235 @@
 </ng-template>
 
 <div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="input-group mb-3">
-        <input
-          #searchInput
-          type="text"
-          class="form-control"
-          placeholder="Search for recipes..."
-          (input)="searchRecipes(searchInput.value)"
-          [value]="title"
-        />
-        <div class="input-group-append">
-          <button
-            class="btn btn-outline-secondary"
-            type="button"
-            (click)="searchRecipes(searchInput.value)"
-          >
-            Search
-          </button>
+  <div class="row">
+    <!-- Side column for filtering -->
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <form [formGroup]="searchFormGroup" (ngSubmit)="onSubmitSearchForm()">
+            <div class="mb-3">
+              <label for="searchInput" class="form-label">Search</label>
+              <div class="input-group">
+                <input
+                  #searchInput
+                  type="text"
+                  class="form-control"
+                  placeholder="Search for recipes..."
+                  (keydown.enter)="onSubmitSearchForm()"
+                  formControlName="search"
+                  id="searchInput"
+                />
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="sort" class="form-label">Sort By</label>
+              <select id="sort" class="form-select" formControlName="sort">
+                <option value="title,asc">Title: A-Z</option>
+                <option value="title,desc">Title: Z-A</option>
+                <option value="cookingTime,asc">
+                  Cooking Time: Low to High
+                </option>
+                <option value="cookingTime,desc">
+                  Cooking Time: High to Low
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="cookingTime" class="form-label">Cooking Time</label>
+              <div class="row g-2">
+                <div class="col">
+                  <input
+                    type="number"
+                    id="minCookingTime"
+                    class="form-control"
+                    placeholder="Min"
+                    formControlName="minCookingTime"
+                  />
+                </div>
+                <div class="col">
+                  <input
+                    type="number"
+                    id="maxCookingTime"
+                    class="form-control"
+                    placeholder="Max"
+                    formControlName="maxCookingTime"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="servingSize" class="form-label">Serving Size</label>
+              <div class="row g-2">
+                <div class="col">
+                  <input
+                    type="number"
+                    id="minServingSize"
+                    class="form-control"
+                    placeholder="Min"
+                    formControlName="minServingSize"
+                  />
+                </div>
+                <div class="col">
+                  <input
+                    type="number"
+                    id="maxServingSize"
+                    class="form-control"
+                    placeholder="Max"
+                    formControlName="maxServingSize"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="tags" class="form-label">Tags</label>
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter tags"
+                  list="tagsList"
+                  #tagsInput
+                  id="tags"
+                  (keydown.enter)="addTag(tagsInput.value)"
+                  (input)="searchTags(tagsInput.value)"
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  (click)="addTag(tagsInput.value)"
+                >
+                  Add Tag
+                </button>
+              </div>
+              <datalist id="tagsList">
+                <option
+                  *ngFor="let tag of availableTags"
+                  [value]="tag.name"
+                ></option>
+              </datalist>
+            </div>
+
+            <div formArrayName="tags" class="mb-3">
+              <div
+                *ngFor="let tag of tagsFormArray.controls; let i = index"
+                class="d-flex align-items-center mb-2"
+              >
+                <span class="badge bg-primary me-2">
+                  {{ tag.value }}
+                </span>
+                <button
+                  type="button"
+                  class="btn btn-outline-danger btn-sm"
+                  (click)="removeTag(i)"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+            <div class="d-grid gap-2">
+              <button
+                class="btn btn-primary"
+                type="button"
+                (click)="onSubmitSearchForm()"
+              >
+                Search
+              </button>
+              <button
+                class="btn btn-outline-danger"
+                type="button"
+                (click)="onClearFilters()"
+              >
+                Clear Filters
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="row" *ngIf="recipes && recipes.length > 0; else noRecipes">
-    <div class="col-md-4" *ngFor="let recipe of recipes">
-      <app-recipe-card [recipe]="recipe" class="mb-4" />
+    <!-- Main content area for recipes -->
+    <div
+      class="col-md-8 d-flex flex-column align-items-center justify-content-between"
+    >
+      <ng-container *ngIf="isLoadingRecipes; else recipesList">
+        <ng-container *ngTemplateOutlet="loading" />
+      </ng-container>
+      <ng-template #recipesList>
+        <div
+          class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 g-4"
+          *ngIf="recipes && recipes.length > 0; else noRecipes"
+        >
+          <div class="col" *ngFor="let recipe of recipes">
+            <app-recipe-card [recipe]="recipe"></app-recipe-card>
+          </div>
+        </div>
+        <nav aria-label="Recipe pagination" class="mt-4">
+          <ul class="pagination justify-content-center">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a
+                class="page-link"
+                (click)="changePage(currentPage - 1)"
+                href="javascript:void(0)"
+                aria-label="Previous"
+              >
+                Previous
+              </a>
+            </li>
+            <li
+              class="page-item"
+              *ngFor="let page of paginationArray; let i = index"
+              [class.active]="currentPage === page"
+            >
+              <a
+                class="page-link"
+                (click)="changePage(page)"
+                href="javascript:void(0)"
+              >
+                {{ page }}
+              </a>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a
+                class="page-link"
+                (click)="changePage(currentPage + 1)"
+                href="javascript:void(0)"
+                aria-label="Next"
+              >
+                Next
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </ng-template>
+
+      <ng-template #noRecipes>
+        <div class="row">
+          <div class="col-md-12">
+            <p class="text-center">No recipes found.</p>
+          </div>
+        </div>
+        <!-- <nav aria-label="Recipe pagination" class="mt-4">
+          <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+              <a
+                class="page-link"
+                href="javascript:void(0)"
+                aria-label="Previous"
+              >
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item disabled">
+              <a class="page-link" href="javascript:void(0)">1</a>
+            </li>
+            <li class="page-item disabled">
+              <a class="page-link" href="javascript:void(0)" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav> -->
+      </ng-template>
     </div>
   </div>
-
-  <ng-template #noRecipes>
-    <div class="row">
-      <div class="col-md-12">
-        <p class="text-center">No recipes found.</p>
-      </div>
-    </div>
-  </ng-template>
 </div>
