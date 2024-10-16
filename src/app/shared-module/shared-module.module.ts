@@ -9,6 +9,7 @@ import { IngredientsService } from './services/ingredients.service';
 import { MeasurmentsUnitsService } from './services/measurments-units.service';
 import { RecipesService } from './services/recipes-service.service';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { TagsService } from './services/tags.service';
 
 @NgModule({
   imports: [
@@ -32,6 +33,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     IngredientsService,
     MeasurmentsUnitsService,
     RecipesService,
+    TagsService,
   ],
 })
 export class SharedModule {}
