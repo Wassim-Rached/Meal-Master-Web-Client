@@ -113,13 +113,10 @@ export class CreateRecipeComponent implements OnInit {
     if (!this.formGroup.valid) return;
 
     const body = this.formGroup.value;
-    console.log(body);
-    console.log(JSON.stringify(body));
 
     this.isCreating = true;
     this.recipesService.createRecipe(body).subscribe({
       next: (res) => {
-        console.log(res);
         alert('Recipe created successfully');
         this.isCreating = false;
       },

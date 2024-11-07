@@ -1,0 +1,20 @@
+<ng-template #loading>
+  <div class="progress-bar">
+    <div class="progress-bar-value"></div>
+  </div>
+</ng-template>
+
+<ng-container *ngIf="recipes; else loading">
+  <h1 class="text-center my-4">Favorites</h1>
+  <div class="container">
+    <div *ngIf="recipes.length === 0" class="alert alert-warning text-center">
+      <p>No favorites available.</p>
+      <p>Browse our recipes and add your favorites to see them here.</p>
+    </div>
+    <div class="row">
+      <div *ngFor="let recipe of recipes" class="col-md-4 mb-4">
+        <app-recipe-card [recipe]="recipe" class="card" />
+      </div>
+    </div>
+  </div>
+</ng-container>

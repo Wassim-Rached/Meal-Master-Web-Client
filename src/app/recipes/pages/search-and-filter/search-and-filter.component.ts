@@ -40,8 +40,6 @@ export class SearchAndFilterComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     // Focus the search input
-    console.log('ngAfterViewInit');
-    console.log(this.searchInput);
     this.focusSearchInput();
   }
 
