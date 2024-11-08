@@ -16,6 +16,7 @@ import { FavoritesService } from './services/favorites.service';
 import { FoldersService } from './services/folders.service';
 import { RequireAuthGuard } from '../guards/AuthGuard';
 import { RequireUnAuthGuard } from '../guards/UnAuthGuard';
+import { TagsService } from './services/tags.service';
 
 @NgModule({
   imports: [
@@ -44,6 +45,7 @@ import { RequireUnAuthGuard } from '../guards/UnAuthGuard';
     FoldersService,
     RequireAuthGuard,
     RequireUnAuthGuard,
+    TagsService,
   ],
 })
 export class SharedModule {}
