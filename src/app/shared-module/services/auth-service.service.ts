@@ -65,7 +65,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
-    this.currentAccountSubject.next(null);
+    this.refreshAccount();
     this.toastrService.info('Logged out');
   }
 
@@ -78,7 +78,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    return this.getToken() !== null;
   }
 
   // signin(creds: SigninCredentials): Observable<string> {

@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  logout(): void {
+  onLogout(): void {
     this.authService.logout();
     this.router.navigate(['/auth/signin']).then(() => {
       this.toastrService.info('Redirected to singin page');

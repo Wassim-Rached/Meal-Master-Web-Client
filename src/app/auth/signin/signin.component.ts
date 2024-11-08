@@ -43,6 +43,7 @@ export class SigninComponent implements OnInit {
       next: () => {
         this.isSubmitting = false;
         this.toastrService.success('Signin successful');
+        this.authService.refreshAccount();
         this.router.navigate([this.redirect || '/']).then(() => {
           this.toastrService.info('Redirected Back Successfully');
         });
