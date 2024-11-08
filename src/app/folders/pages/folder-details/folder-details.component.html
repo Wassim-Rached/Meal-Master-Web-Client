@@ -1,0 +1,85 @@
+<ng-container *ngIf="folder === null; else page">
+  <app-not-found />
+</ng-container>
+
+<ng-template #page>
+  <ng-template #loading>
+    <div class="progress">
+      <div
+        class="progress-bar progress-bar-striped progress-bar-animated"
+        role="progressbar"
+        style="width: 100%"
+      ></div>
+    </div>
+  </ng-template>
+
+  <ng-container *ngIf="folder; else loading">
+    <h1 class="text-center my-4">
+      {{ folder.name }} ({{ folder.recipes.length }})
+    </h1>
+    <div class="container">
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search recipes"
+          aria-label="Search recipes"
+          #search
+          (keyup.enter)="searchRecipes(search.value)"
+          (input)="searchRecipes(search.value)"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            (click)="searchRecipes(search.value)"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+      <div
+        *ngIf="folder.recipes.length === 0"
+        class="alert alert-warning text-center"
+      >
+        <p>No favorites available.</p>
+        <p>Browse our recipes and add your favorites to see them here.</p>
+      </div>
+      <div class="row">
+        <div *ngFor="let recipe of recipesList" class="col-md-4 mb-4">
+          <div class="card h-100">
+            <app-recipe-card
+              [recipe]="recipe"
+              class="card-body"
+            ></app-recipe-card>
+            <div class="card-footer text-center">
+              <button
+                class="btn btn-danger"
+                (click)="removeRecipe(recipe)"
+                [disabled]="isRecipeBeingRemoved(recipe.id)"
+              >
+                <ng-container
+                  *ngIf="isRecipeBeingRemoved(recipe.id); else removeText"
+                >
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Removing...
+                </ng-container>
+                <ng-template #removeText> Remove </ng-template>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          *ngIf="recipesList.length === 0 && folder.recipes.length > 0"
+          class="alert alert-info text-center"
+        >
+          No recipes found.
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ng-template>
