@@ -14,7 +14,6 @@ import {
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { Tag, TagsService } from '../../../shared-module/services/tags.service';
 
 @Component({
   selector: 'app-search-and-filter',
@@ -26,9 +25,7 @@ import { Tag, TagsService } from '../../../shared-module/services/tags.service';
 export class SearchAndFilterComponent implements OnInit, AfterViewInit {
   recipes?: Recipe[];
   searchFormGroup!: FormGroup;
-  availableTags: Tag[] = [];
   isLoadingRecipes = false;
-  isLoadingTags = false;
   // pagination
   currentPage = 0;
   totalPages = 0;
@@ -39,15 +36,14 @@ export class SearchAndFilterComponent implements OnInit, AfterViewInit {
     private recipeService: RecipesService,
     private route: ActivatedRoute,
     private router: Router,
-    private fb: FormBuilder,
-    private tagsService: TagsService
+    private fb: FormBuilder
   ) {}
 
   ngOnInit() {
     this.initSearchForm();
-    this.searchTags('');
     // Subscribe to query params changes
     this.route.queryParams.subscribe((params) => {
+      console.log(params);
       this.searchFormGroup.patchValue({
         search: params['search'],
         minCookingTime: params['minCookingTime'],
@@ -58,17 +54,9 @@ export class SearchAndFilterComponent implements OnInit, AfterViewInit {
         page: params['page'],
         size: params['size'] || 4,
       });
-      const tags = params['tags'];
-      if (tags) {
-        if (Array.isArray(tags)) {
-          tags.forEach((tag) => this.addTag(tag));
-        } else {
-          this.addTag(tags);
-        }
-      }
       if (!params['sort']) {
         this.router.navigate([], {
-          queryParams: { sort: 'title,asc' },
+          queryParams: { sort: 'title,asc', ...params },
         });
       } else {
         this.searchRecipes();
@@ -80,21 +68,6 @@ export class SearchAndFilterComponent implements OnInit, AfterViewInit {
     this.focusSearchInput();
   }
 
-  // search available tags
-  searchTags(name: string) {
-    this.isLoadingTags = true;
-    this.tagsService.searchTags(name).subscribe({
-      next: (tags) => {
-        this.availableTags = tags;
-        this.isLoadingTags = false;
-      },
-      error: (err) => {
-        console.error(err);
-        this.availableTags = [];
-      },
-    });
-  }
-
   // init the search form
   initSearchForm() {
     this.searchFormGroup = this.fb.group({
@@ -104,26 +77,9 @@ export class SearchAndFilterComponent implements OnInit, AfterViewInit {
       minServingSize: [null],
       maxServingSize: [null],
       sort: ['title,asc'],
-      tags: this.fb.array([]),
       page: [0],
       size: [4],
     });
-  }
-
-  get tagsFormArray(): FormArray {
-    return this.searchFormGroup.get('tags') as FormArray;
-  }
-
-  // add a tag to the form
-  addTag(tagName: string) {
-    if (!tagName || tagName === '') return;
-    if (this.tagsFormArray.value.includes(tagName)) return;
-    this.tagsFormArray.push(this.fb.control(tagName));
-  }
-
-  // remove a tag from the form
-  removeTag(index: number) {
-    this.tagsFormArray.removeAt(index);
   }
 
   public onSubmitSearchForm() {
@@ -191,7 +147,6 @@ export interface FormValue {
   minServingSize: number | null;
   maxServingSize: number | null;
   sort: string;
-  tags: string[];
   page: number;
   size: number;
 }

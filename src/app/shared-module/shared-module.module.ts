@@ -11,12 +11,10 @@ import { RecipesService } from './services/recipes-service.service';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthService } from './services/auth-service.service';
 import { AccountsService } from './services/accounts.service';
-import { authInterceptor } from './AuthInterceptor';
 import { FavoritesService } from './services/favorites.service';
 import { FoldersService } from './services/folders.service';
 import { RequireAuthGuard } from '../guards/AuthGuard';
 import { RequireUnAuthGuard } from '../guards/UnAuthGuard';
-import { TagsService } from './services/tags.service';
 
 @NgModule({
   imports: [
@@ -45,7 +43,6 @@ import { TagsService } from './services/tags.service';
     FoldersService,
     RequireAuthGuard,
     RequireUnAuthGuard,
-    TagsService,
   ],
 })
 export class SharedModule {}

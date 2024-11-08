@@ -5,7 +5,6 @@ import { Ingredient } from './ingredients.service';
 import { MeasurementUnit } from './measurments-units.service';
 import { environment } from '../../../environments/environment';
 import { Page } from '../../../types';
-import { FormValue } from '../../recipes/pages/search-and-filter/search-and-filter.component';
 
 export interface Recipe {
   id: string;
@@ -39,7 +38,6 @@ export interface RecipeSearchParams {
   minServingSize?: number;
   maxServingSize?: number;
   sort: string;
-  tags?: string;
   page?: number;
   size?: number;
 }
@@ -66,7 +64,6 @@ export class RecipesService {
       maxServingSize,
       minServingSize,
       sort,
-      tags,
       page,
       size,
     } = searchParams;
@@ -78,7 +75,6 @@ export class RecipesService {
       .set('maxServingSize', maxServingSize?.toString() || '')
       .set('minServingSize', minServingSize?.toString() || '')
       .set('sort', sort)
-      .set('tags', tags || '')
       .set('page', page?.toString() || '')
       .set('size', size?.toString() || '4');
 

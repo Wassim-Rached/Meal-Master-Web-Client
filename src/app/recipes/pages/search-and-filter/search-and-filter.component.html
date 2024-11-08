@@ -84,52 +84,7 @@
                 </div>
               </div>
             </div>
-            <div class="mb-3">
-              <label for="tags" class="form-label">Tags</label>
-              <div class="input-group">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter tags"
-                  list="tagsList"
-                  #tagsInput
-                  id="tags"
-                  (keydown.enter)="addTag(tagsInput.value)"
-                  (input)="searchTags(tagsInput.value)"
-                />
-                <button
-                  type="button"
-                  class="btn btn-outline-primary"
-                  (click)="addTag(tagsInput.value)"
-                >
-                  Add Tag
-                </button>
-              </div>
-              <datalist id="tagsList">
-                <option
-                  *ngFor="let tag of availableTags"
-                  [value]="tag.name"
-                ></option>
-              </datalist>
-            </div>
 
-            <div formArrayName="tags" class="mb-3">
-              <div
-                *ngFor="let tag of tagsFormArray.controls; let i = index"
-                class="d-flex align-items-center mb-2"
-              >
-                <span class="badge bg-primary me-2">
-                  {{ tag.value }}
-                </span>
-                <button
-                  type="button"
-                  class="btn btn-outline-danger btn-sm"
-                  (click)="removeTag(i)"
-                >
-                  Remove
-                </button>
-              </div>
-            </div>
             <div class="d-grid gap-2">
               <button
                 class="btn btn-primary"
