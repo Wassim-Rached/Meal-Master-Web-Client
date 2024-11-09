@@ -3,6 +3,8 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   RecipesService,
   CreateInstructionRequestDTO,
+  CreateRecipeRequestDTO,
+  CreateRecipeIngredientRequestDTO,
 } from '../../../shared-module/services/recipes-service.service';
 import {
   Ingredient,
@@ -42,6 +44,11 @@ export class CreateRecipeComponent implements OnInit {
 
     // init form
     this.initForm();
+
+    // add first instruction
+    this.addInstruction();
+    // add first recipe ingredient
+    this.addRecipeIngredient();
   }
 
   // init form
@@ -50,10 +57,16 @@ export class CreateRecipeComponent implements OnInit {
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
       cover_img_url: ['', [Validators.required]],
-      cooking_time: [0, [Validators.required]],
-      serving_size: [0, [Validators.required]],
-      instructions: this.fb.array([]),
-      recipeIngredients: this.fb.array([]),
+      cooking_time: [0],
+      serving_size: [0, [Validators.required, Validators.min(1)]],
+      instructions: this.fb.array(
+        [],
+        [Validators.required, Validators.minLength(1)]
+      ),
+      recipeIngredients: this.fb.array(
+        [],
+        [Validators.required, Validators.minLength(1)]
+      ),
     });
   }
 
@@ -79,7 +92,10 @@ export class CreateRecipeComponent implements OnInit {
 
   addInstruction() {
     const instruction = this.fb.group({
-      step_number: [0, [Validators.required, Validators.min(1)]],
+      step_number: [
+        this.instructionsFormArray.length + 1,
+        [Validators.required, Validators.min(1)],
+      ],
       text: ['', [Validators.required]],
       time_estimate: [0, [Validators.required, Validators.min(1)]],
     });
@@ -110,16 +126,35 @@ export class CreateRecipeComponent implements OnInit {
 
   // submit form
   onSubmit() {
+    console.log(this.formGroup.valid);
+    // log the problem
+    console.log(this.formGroup.errors);
+    console.log(this.formGroup.get('instructions')?.errors);
+    console.log(this.formGroup.get('recipeIngredients')?.errors);
+    console.log(this.formGroup.value);
     if (!this.formGroup.valid) return;
 
     const body = this.formGroup.value;
-    console.log(body);
-    console.log(JSON.stringify(body));
+
+    const cookingTime = body.instructions.reduce(
+      (acc: number, curr: any) => acc + curr.time_estimate,
+      0
+    );
+
+    const requestBody: CreateRecipeRequestDTO = {
+      title: body.title,
+      description: body.description,
+      cover_img_url: body.cover_img_url,
+      cooking_time: cookingTime,
+      serving_size: body.serving_size,
+      instructions: body.instructions as CreateInstructionRequestDTO[],
+      recipeIngredients:
+        body.recipeIngredients as CreateRecipeIngredientRequestDTO[],
+    };
 
     this.isCreating = true;
-    this.recipesService.createRecipe(body).subscribe({
+    this.recipesService.createRecipe(requestBody).subscribe({
       next: (res) => {
-        console.log(res);
         alert('Recipe created successfully');
         this.isCreating = false;
       },
@@ -128,5 +163,20 @@ export class CreateRecipeComponent implements OnInit {
         this.isCreating = false;
       },
     });
+  }
+
+  moveInstructionUp(index: number) {
+    if (index === 0) return;
+    const instructions = this.instructionsFormArray.controls;
+    const temp = instructions[index];
+    instructions[index] = instructions[index - 1];
+    instructions[index - 1] = temp;
+  }
+  moveInstructionDown(index: number) {
+    const instructions = this.instructionsFormArray.controls;
+    if (index === instructions.length - 1) return;
+    const temp = instructions[index];
+    instructions[index] = instructions[index + 1];
+    instructions[index + 1] = temp;
   }
 }

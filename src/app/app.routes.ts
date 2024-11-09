@@ -1,4 +1,7 @@
 import { Routes } from '@angular/router';
+import { NotFoundComponent } from './shared-module/components/not-found/not-found.component';
+import { RequireUnAuthGuard } from './guards/UnAuthGuard';
+import { RequireAuthGuard } from './guards/AuthGuard';
 
 export const routes: Routes = [
   {
@@ -10,5 +13,26 @@ export const routes: Routes = [
     path: 'recipes',
     loadChildren: () =>
       import('./recipes/recipes.module').then((m) => m.RecipesModule),
+  },
+  {
+    path: 'favorites',
+    canActivate: [RequireAuthGuard],
+    loadChildren: () =>
+      import('./favorites/favorites.module').then((m) => m.FavoritesModule),
+  },
+  {
+    path: 'folders',
+    canActivate: [RequireAuthGuard],
+    loadChildren: () =>
+      import('./folders/folders.module').then((m) => m.FoldersModule),
+  },
+  {
+    path: 'auth',
+    canActivate: [RequireUnAuthGuard],
+    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
   },
 ];
