@@ -22,7 +22,7 @@ import {
 export class RecipeDetailsComponent implements OnInit {
   recipe?: Recipe | null;
   isFavorite: boolean | undefined = undefined;
-  folders: Folder[] = [];
+  folders?: Folder[];
 
   constructor(
     private recipeService: RecipesService,
@@ -53,13 +53,14 @@ export class RecipeDetailsComponent implements OnInit {
   }
 
   refreshFolders() {
-    this.folders = [];
+    this.folders = undefined;
     this.foldersService.getMyFolders().subscribe({
       next: (folders) => {
         this.folders = folders;
       },
       error: (error) => {
         console.error(error);
+        this.folders = undefined;
       },
     });
   }
@@ -98,13 +99,14 @@ export class RecipeDetailsComponent implements OnInit {
       },
       error: (error) => {
         console.error(error);
-        this.isFavorite = false;
+        this.isFavorite = undefined;
       },
     });
   }
 
   isInFolder(folderId: string) {
     if (!this.recipe) return false;
+    if (!this.folders) return false;
 
     const folder = this.folders.find((folder) => folder.id === folderId);
     if (!folder) return false;
@@ -130,6 +132,7 @@ export class RecipeDetailsComponent implements OnInit {
     this.foldersService.addRecipeToFolder(folderId, this.recipe.id).subscribe({
       next: () => {
         this.toastr.success('Recipe added to folder!');
+        if (!this.folders) return;
         this.folders = this.folders.map((folder) => {
           if (folder.id === folderId) {
             return {
@@ -155,6 +158,7 @@ export class RecipeDetailsComponent implements OnInit {
       .subscribe({
         next: () => {
           this.toastr.success('Recipe removed from folder!');
+          if (!this.folders) return;
           this.folders = this.folders.map((folder) => {
             if (folder.id === folderId) {
               return {
