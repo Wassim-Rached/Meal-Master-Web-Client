@@ -5,6 +5,7 @@ import { Ingredient } from './ingredients.service';
 import { MeasurementUnit } from './measurments-units.service';
 import { environment } from '../../../environments/environment';
 import { Page } from '../../../types';
+import { Account } from './accounts.service';
 
 export interface Recipe {
   id: string;
@@ -13,6 +14,7 @@ export interface Recipe {
   cover_img_url?: string;
   cooking_time: number;
   serving_size: number;
+  owner: Account;
   instructions: Instruction[];
   recipeIngredients: RecipeIngredient[];
 }

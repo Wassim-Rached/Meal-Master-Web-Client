@@ -5,9 +5,17 @@
 </ng-template>
 
 <div class="container mt-4">
+  <div class="mb-4">
+    <h1 class="text-center">Welcome to Your Recipe Adventure!</h1>
+    <p class="text-center">
+      Discover delicious recipes crafted for every craving and occasion. Dive in
+      and find something wonderful to cook today!
+    </p>
+  </div>
+
   <div class="row">
     <!-- Side column for filtering -->
-    <div class="col-md-4">
+    <div class="col-md-4 mb-4">
       <div class="card shadow-sm">
         <div class="card-body">
           <form [formGroup]="searchFormGroup" (ngSubmit)="onSubmitSearchForm()">
@@ -115,11 +123,16 @@
       </ng-container>
       <ng-template #recipesList>
         <div
-          class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 g-4"
           *ngIf="recipes && recipes.length > 0; else noRecipes"
+          class="w-100"
         >
-          <div class="col" *ngFor="let recipe of recipes">
-            <app-recipe-card [recipe]="recipe"></app-recipe-card>
+          <div class="row w-100">
+            <div
+              class="col-lg-6 col-md-6 col-sm-12 mb-4"
+              *ngFor="let recipe of recipes; let i = index"
+            >
+              <app-recipe-card [recipe]="recipe"></app-recipe-card>
+            </div>
           </div>
         </div>
         <nav aria-label="Recipe pagination" class="mt-4">

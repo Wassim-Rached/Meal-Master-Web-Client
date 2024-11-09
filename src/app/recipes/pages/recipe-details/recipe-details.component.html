@@ -16,14 +16,22 @@
           <img
             *ngIf="recipe.cover_img_url"
             [src]="recipe.cover_img_url"
-            class="img-fluid rounded mb-4 shadow-sm"
+            class="img-fluid rounded shadow-sm w-100 mb-0"
+            style="max-height: 100%"
             alt="{{ recipe.title }} cover image"
           />
           <!-- make the buttons responsive so they drop under ttitle on smaller screens -->
           <div
-            class="d-flex justify-content-between mt-3 align-items-center mb-4"
+            class="d-flex justify-content-between mt-3 align-items-center mb-2"
           >
-            <h4 class="mb-0">{{ recipe.title }}</h4>
+            <div>
+              <h4 class="mb-0 text-uppercase text-primary">
+                {{ recipe.title }}
+              </h4>
+              <p class="text-muted mb-0">
+                by <strong>{{ recipe.owner.username }}</strong>
+              </p>
+            </div>
             <div class="d-flex align-items-center gap-3">
               <div
                 class="favorite-button me-2"
@@ -139,7 +147,27 @@
               </div>
             </div>
           </div>
-          <p class="lead">{{ recipe.description }}</p>
+
+          <div class="mb-4">
+            <share-buttons
+              [classList]="['p-0']"
+              theme="circles-dark"
+              [include]="[
+                'copy',
+                'facebook',
+                'messenger',
+                'telegram',
+                'whatsapp'
+              ]"
+              [showIcon]="true"
+              [showText]="false"
+              [url]="shareUrl"
+              [description]="shareDescription"
+              class="pt-5"
+            >
+            </share-buttons>
+          </div>
+          <p class="fs-5 ps-2">{{ recipe.description }}</p>
 
           <div class="recipe-meta mb-4">
             <p>

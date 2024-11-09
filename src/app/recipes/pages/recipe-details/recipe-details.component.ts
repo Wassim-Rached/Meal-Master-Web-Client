@@ -12,10 +12,13 @@ import {
   FoldersService,
 } from '../../../shared-module/services/folders.service';
 
+import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { ShareIconsModule } from 'ngx-sharebuttons/icons';
+
 @Component({
   selector: 'app-recipe-details',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, ShareButtonsModule, ShareIconsModule],
   templateUrl: './recipe-details.component.html',
   styleUrl: './recipe-details.component.css',
 })
@@ -176,5 +179,14 @@ export class RecipeDetailsComponent implements OnInit {
           this.toastr.error('Failed to remove recipe from folder');
         },
       });
+  }
+
+  get shareUrl() {
+    return window.location.href;
+  }
+
+  get shareDescription() {
+    if (!this.recipe) return '';
+    return this.recipe.title;
   }
 }
