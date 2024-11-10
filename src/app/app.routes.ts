@@ -27,6 +27,12 @@ export const routes: Routes = [
       import('./folders/folders.module').then((m) => m.FoldersModule),
   },
   {
+    path: 'profile',
+    canActivate: [RequireAuthGuard],
+    loadChildren: () =>
+      import('./profile/profile.module').then((m) => m.ProfileModule),
+  },
+  {
     path: 'auth',
     canActivate: [RequireUnAuthGuard],
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),

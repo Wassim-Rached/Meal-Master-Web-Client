@@ -1,0 +1,15 @@
+<ng-template #loading>
+  <div class="progress-bar">
+    <div class="progress-bar-value"></div>
+  </div>
+</ng-template>
+
+<ng-container *ngIf="account === undefined; else page">
+  <ng-container *ngTemplateOutlet="loading"></ng-container>
+</ng-container>
+
+<ng-template #page>
+  <app-profile-header [account]="account!" />
+  <app-delete-my-account />
+  <app-my-recipes />
+</ng-template>

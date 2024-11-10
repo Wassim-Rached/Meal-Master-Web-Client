@@ -15,6 +15,7 @@ import {
   MeasurmentsUnitsService,
 } from '../../../shared-module/services/measurments-units.service';
 import { SharedModule } from '../../../shared-module/shared-module.module';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-recipe',
@@ -33,7 +34,8 @@ export class CreateRecipeComponent implements OnInit {
     private fb: FormBuilder,
     private recipesService: RecipesService,
     private ingredientsService: IngredientsService,
-    private measurmentsUnitsService: MeasurmentsUnitsService
+    private measurmentsUnitsService: MeasurmentsUnitsService,
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit() {
@@ -56,9 +58,9 @@ export class CreateRecipeComponent implements OnInit {
     this.formGroup = this.fb.group({
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      cover_img_url: ['', [Validators.required]],
-      cooking_time: [0],
-      serving_size: [0, [Validators.required, Validators.min(1)]],
+      coverImgUrl: ['', [Validators.required]],
+      cookingTime: [0],
+      servingSize: [0, [Validators.required, Validators.min(1)]],
       instructions: this.fb.array(
         [],
         [Validators.required, Validators.minLength(1)]
@@ -92,12 +94,12 @@ export class CreateRecipeComponent implements OnInit {
 
   addInstruction() {
     const instruction = this.fb.group({
-      step_number: [
+      stepNumber: [
         this.instructionsFormArray.length + 1,
         [Validators.required, Validators.min(1)],
       ],
       text: ['', [Validators.required]],
-      time_estimate: [0, [Validators.required, Validators.min(1)]],
+      timeEstimate: [0, [Validators.required, Validators.min(1)]],
     });
     this.instructionsFormArray.push(instruction);
   }
@@ -126,31 +128,27 @@ export class CreateRecipeComponent implements OnInit {
 
   // submit form
   onSubmit() {
-    console.log(this.formGroup.valid);
     // log the problem
-    console.log(this.formGroup.errors);
-    console.log(this.formGroup.get('instructions')?.errors);
-    console.log(this.formGroup.get('recipeIngredients')?.errors);
-    console.log(this.formGroup.value);
     if (!this.formGroup.valid) return;
 
     const body = this.formGroup.value;
 
     const cookingTime = body.instructions.reduce(
-      (acc: number, curr: any) => acc + curr.time_estimate,
+      (acc: number, curr: any) => acc + curr.timeEstimate,
       0
     );
 
     const requestBody: CreateRecipeRequestDTO = {
       title: body.title,
       description: body.description,
-      cover_img_url: body.cover_img_url,
-      cooking_time: cookingTime,
-      serving_size: body.serving_size,
+      coverImgUrl: body.coverImgUrl,
+      cookingTime: cookingTime,
+      servingSize: body.servingSize,
       instructions: body.instructions as CreateInstructionRequestDTO[],
       recipeIngredients:
         body.recipeIngredients as CreateRecipeIngredientRequestDTO[],
     };
+    console.log(requestBody);
 
     this.isCreating = true;
     this.recipesService.createRecipe(requestBody).subscribe({
@@ -161,6 +159,7 @@ export class CreateRecipeComponent implements OnInit {
       error: (err) => {
         console.error(err);
         this.isCreating = false;
+        this.toastrService.error(err.error || 'Failed to create recipe');
       },
     });
   }

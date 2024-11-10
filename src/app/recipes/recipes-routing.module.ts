@@ -4,12 +4,18 @@ import { CreateRecipeComponent } from './pages/create-recipe/create-recipe.compo
 import { SearchAndFilterComponent } from './pages/search-and-filter/search-and-filter.component';
 import { RecipeDetailsComponent } from './pages/recipe-details/recipe-details.component';
 import { RequireAuthGuard } from '../guards/AuthGuard';
+import { UpdateRecipeComponent } from './pages/update-recipe/update-recipe.component';
 
 const routes: Routes = [
   {
     path: 'create',
     canActivate: [RequireAuthGuard],
     component: CreateRecipeComponent,
+  },
+  {
+    path: 'update/:id',
+    canActivate: [RequireAuthGuard],
+    component: UpdateRecipeComponent,
   },
   {
     path: 'search',

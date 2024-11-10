@@ -30,4 +30,13 @@ export class AccountsService {
   getMyAccount() {
     return this.http.get<Account>(`${this.BASE_URL}/api/accounts/my`);
   }
+
+  deleteMyAccount(password: string): Observable<string> {
+    return this.http.delete(
+      `${this.BASE_URL}/api/accounts/my?password=${password}`,
+      {
+        responseType: 'text',
+      }
+    );
+  }
 }

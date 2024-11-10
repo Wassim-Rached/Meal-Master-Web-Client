@@ -11,9 +11,9 @@ export interface Recipe {
   id: string;
   title: string;
   description?: string;
-  cover_img_url?: string;
-  cooking_time: number;
-  serving_size: number;
+  coverImgUrl?: string;
+  cookingTime: number;
+  servingSize: number;
   owner: Account;
   instructions: Instruction[];
   recipeIngredients: RecipeIngredient[];
@@ -21,9 +21,9 @@ export interface Recipe {
 
 export interface Instruction {
   id: string;
-  step_number: number;
+  stepNumber: number;
   text: string;
-  time_estimate: number;
+  timeEstimate: number;
 }
 
 export interface RecipeIngredient {
@@ -89,17 +89,49 @@ export class RecipesService {
     return this.http.post<string>(`${this.BASE_URL}/api/recipes`, recipe);
   }
 
-  getRecipeById(id: number): Observable<Recipe> {
+  getRecipeById(id: string): Observable<Recipe> {
     return this.http.get<Recipe>(`${this.BASE_URL}/api/recipes/${id}`);
+  }
+
+  getMyRecipes({
+    page,
+    size,
+  }: {
+    page: number;
+    size: number;
+  }): Observable<Page<Recipe>> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    return this.http.get<Page<Recipe>>(`${this.BASE_URL}/api/recipes/my`, {
+      params,
+    });
+  }
+
+  updateRecipe(id: string, recipe: UpdateRecipeRequestDTO): Observable<string> {
+    return this.http.put<string>(`${this.BASE_URL}/api/recipes/${id}`, recipe, {
+      responseType: 'text' as 'json',
+    });
   }
 }
 
 export interface CreateRecipeRequestDTO {
   title: string;
   description?: string;
-  cover_img_url?: string;
-  cooking_time: number;
-  serving_size: number;
+  coverImgUrl?: string;
+  cookingTime: number;
+  servingSize: number;
+  instructions: CreateInstructionRequestDTO[];
+  recipeIngredients: CreateRecipeIngredientRequestDTO[];
+}
+
+export interface UpdateRecipeRequestDTO {
+  title: string;
+  description: string;
+  coverImgUrl: string;
+  cookingTime: number;
+  servingSize: number;
   instructions: CreateInstructionRequestDTO[];
   recipeIngredients: CreateRecipeIngredientRequestDTO[];
 }
