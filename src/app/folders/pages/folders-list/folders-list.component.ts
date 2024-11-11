@@ -6,11 +6,18 @@ import {
 import { SharedModule } from '../../../shared-module/shared-module.module';
 import { ToastrService } from 'ngx-toastr';
 import { FolderCardComponent } from '../../components/folder-card/folder-card.component';
+// fa search
+import {
+  faSearch,
+  faFloppyDisk,
+  faFolderPlus,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-folders-list',
   standalone: true,
-  imports: [SharedModule, FolderCardComponent],
+  imports: [SharedModule, FolderCardComponent, FontAwesomeModule],
   templateUrl: './folders-list.component.html',
   styleUrl: './folders-list.component.css',
 })
@@ -81,5 +88,9 @@ export class FoldersListComponent {
     this.folders = this.folders?.filter((f) => f.id !== folder.id);
     if (!this.foldersList) return;
     this.foldersList = this.foldersList.filter((f) => f.id !== folder.id);
+  }
+
+  get solidIcons() {
+    return { faSearch, faFloppyDisk, faFolderPlus };
   }
 }

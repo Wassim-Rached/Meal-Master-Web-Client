@@ -7,6 +7,8 @@ import { SharedModule } from '../../../shared-module/shared-module.module';
 import { MyRecipesComponent } from '../../components/my-recipes/my-recipes.component';
 import { ProfileHeaderComponent } from '../../components/profile-header/profile-header.component';
 import { DeleteMyAccountComponent } from '../../components/delete-my-account/delete-my-account.component';
+import { UpdateMyAccountComponent } from '../../components/update-my-account/update-my-account.component';
+import { ChangeMyPasswordComponent } from '../../components/change-my-password/change-my-password.component';
 
 @Component({
   selector: 'app-profile-overview',
@@ -16,6 +18,8 @@ import { DeleteMyAccountComponent } from '../../components/delete-my-account/del
     MyRecipesComponent,
     ProfileHeaderComponent,
     DeleteMyAccountComponent,
+    UpdateMyAccountComponent,
+    ChangeMyPasswordComponent,
   ],
   templateUrl: './profile-overview.component.html',
   styleUrl: './profile-overview.component.css',

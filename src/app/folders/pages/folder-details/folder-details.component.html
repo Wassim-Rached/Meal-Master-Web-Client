@@ -19,6 +19,9 @@
     </h1>
     <div class="container">
       <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">
+          <fa-icon [icon]="solidIcons.faSearch" />
+        </span>
         <input
           type="text"
           class="form-control"
@@ -42,8 +45,8 @@
         *ngIf="folder.recipes.length === 0"
         class="alert alert-warning text-center"
       >
-        <p>No favorites available.</p>
-        <p>Browse our recipes and add your favorites to see them here.</p>
+        <p>No recipes available in this folder.</p>
+        <p>Start adding your favorite recipes to see them listed here.</p>
       </div>
       <div class="row">
         <div *ngFor="let recipe of recipesList" class="col-md-4 mb-4">
@@ -54,7 +57,7 @@
             ></app-recipe-card>
             <div class="card-footer text-center">
               <button
-                class="btn btn-danger"
+                class="btn btn-outline-danger"
                 (click)="removeRecipe(recipe)"
                 [disabled]="isRecipeBeingRemoved(recipe.id)"
               >
@@ -68,7 +71,10 @@
                   ></span>
                   Removing...
                 </ng-container>
-                <ng-template #removeText> Remove </ng-template>
+                <ng-template #removeText>
+                  <fa-icon [icon]="solidIcons.faTrash" />
+                  Remove
+                </ng-template>
               </button>
             </div>
           </div>

@@ -26,6 +26,7 @@ export class RecipeDetailsComponent implements OnInit {
   recipe?: Recipe | null;
   isFavorite: boolean | undefined = undefined;
   folders?: Folder[];
+  isDeleting = false;
 
   constructor(
     private recipeService: RecipesService,
@@ -179,6 +180,28 @@ export class RecipeDetailsComponent implements OnInit {
           this.toastr.error('Failed to remove recipe from folder');
         },
       });
+  }
+
+  deleteRecipe() {
+    if (!this.recipe) return;
+
+    if (!window.confirm('Are you sure you want to delete this recipe?')) return;
+
+    this.isDeleting = true;
+    this.recipeService.deleteRecipe(this.recipe.id).subscribe({
+      next: () => {
+        this.isDeleting = false;
+        this.toastr.success('Recipe deleted!');
+        this.toastr.info('Redirecting to previous page...');
+        window.history.back();
+      },
+      error: (error) => {
+        this.isDeleting = false;
+        console.error(error);
+        const errorMessage = error.error || 'Failed to delete recipe';
+        this.toastr.error(errorMessage);
+      },
+    });
   }
 
   get shareUrl() {

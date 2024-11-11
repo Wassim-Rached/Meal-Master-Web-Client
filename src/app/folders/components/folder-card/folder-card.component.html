@@ -1,39 +1,67 @@
-<div class="card mb-4 shadow-sm h-100">
+<div class="card mb-2 shadow-sm h-100 rounded-lg">
   <div class="card-body d-flex flex-column">
+    <!-- Folder Title -->
     <h5 class="card-title">
       <a
         [routerLink]="['/folders', folder.id]"
-        class="text-decoration-none text-dark"
+        class="text-decoration-none text-dark d-inline-block"
+        style="max-width: calc(100% - 40px)"
       >
+        <fa-icon [icon]="faFolder"></fa-icon>
         {{ folder.name }} ({{ folder.recipes.length }})
       </a>
     </h5>
+    <!-- Recipes Preview -->
+    <div class="mt-1 position-relative" style="min-height: 130px">
+      <div class="d-flex flex-wrap">
+        <!-- Recipe cards -->
+        <div *ngFor="let recipe of folder.recipes.slice(0, 3)" class="p-1">
+          <div class="card" style="width: 100px">
+            <img
+              [src]="recipe.coverImgUrl"
+              alt="{{ recipe.title }}"
+              class="card-img-top"
+              style="height: 50px; object-fit: cover"
+            />
+            <div class="card-body p-1">
+              <p class="card-text text-truncate" style="font-size: 0.75rem">
+                {{ recipe.title }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- "+more" indicator -->
+        <div
+          *ngIf="folder.recipes.length > 3"
+          class="p-1 d-flex align-items-center flex-nowrap"
+          style="font-size: 0.75rem; white-space: nowrap"
+        >
+          <span class="text-muted">
+            +{{ folder.recipes.length - 3 }} more
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Button -->
     <button
       type="button"
-      class="btn btn-danger mt-2 align-self-start"
+      class="btn btn-outline-danger mt-3 align-self-end"
       [disabled]="isDeleting"
       (click)="onDeleteFolder()"
+      style="transition: all 0.3s ease"
     >
-      <span *ngIf="isDeleting"> Deleting...</span>
+      <span *ngIf="isDeleting">Deleting...</span>
       <span
         *ngIf="isDeleting"
         class="spinner-border spinner-border-sm"
         role="status"
         aria-hidden="true"
       ></span>
-      <span *ngIf="!isDeleting">Delete Folder</span>
+      <span *ngIf="!isDeleting">
+        <fa-icon [icon]="faTrash"></fa-icon> Delete Folder
+      </span>
     </button>
-    <div class="mt-3">
-      <div class="d-flex flex-wrap">
-        <div *ngFor="let recipe of folder.recipes.slice(0, 3)" class="p-1">
-          <img
-            [src]="recipe.coverImgUrl"
-            alt="{{ recipe.title }}"
-            class="img-thumbnail"
-            style="height: 50px; max-width: 100px"
-          />
-        </div>
-      </div>
-    </div>
   </div>
 </div>

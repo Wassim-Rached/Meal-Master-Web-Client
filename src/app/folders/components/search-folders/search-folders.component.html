@@ -1,0 +1,54 @@
+<div class="container mt-5">
+  <!-- Search Form -->
+  <div class="card shadow-lg">
+    <div class="card-body p-4">
+      <h5 class="card-title mb-4">📂 Search Folders</h5>
+
+      <form class="d-flex flex-column">
+        <!-- Search input with icon -->
+        <div class="input-group mb-4">
+          <span class="input-group-text">
+            <fa-icon [icon]="faFolder"></fa-icon>
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search Folders..."
+            #searchTerm
+            (input)="refreshFolders(searchTerm.value)"
+          />
+          <span class="input-group-text">
+            <fa-icon [icon]="faSearch"></fa-icon>
+          </span>
+        </div>
+
+        <!-- Folder list (with loading and no results) -->
+        <div *ngIf="folders; else loading">
+          <ul class="list-group">
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let folder of folders"
+            >
+              <div>
+                <fa-icon [icon]="faFolder" />
+                <!-- Folder Icon -->
+                {{ folder.name }}
+              </div>
+              <button class="btn btn-outline-primary btn-sm">Select</button>
+            </li>
+          </ul>
+          <div *ngIf="folders.length === 0" class="text-center mt-3">
+            <p class="text-muted">No folders found.</p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Loading Template -->
+  <ng-template #loading>
+    <div class="progress-bar">
+      <div class="progress-bar-value"></div>
+    </div>
+  </ng-template>
+</div>

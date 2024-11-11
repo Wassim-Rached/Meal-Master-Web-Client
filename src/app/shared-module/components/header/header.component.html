@@ -1,6 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
   <div class="container-fluid">
-    <a class="navbar-brand fw-bold" href="#">MealMaster</a>
+    <!-- Brand -->
+    <a class="navbar-brand fw-bold text-primary" href="#">
+      <fa-icon [icon]="solidIcons.faUtensils" class="me-2"></fa-icon> MealMaster
+    </a>
+
+    <!-- Toggler for mobile view -->
     <button
       class="navbar-toggler"
       type="button"
@@ -12,15 +17,25 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
+
+    <!-- Navbar links -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/recipes/create">Create Recipe</a>
+          <a
+            class="nav-link d-flex align-items-center"
+            routerLink="/recipes/create"
+          >
+            Create Recipe
+            <fa-icon [icon]="solidIcons.faPlusCircle" class="ms-1"></fa-icon>
+          </a>
         </li>
       </ul>
-      <div class="d-flex">
+
+      <!-- Search bar -->
+      <div class="d-flex me-3">
         <input
-          class="form-control me-2"
+          class="form-control"
           type="search"
           placeholder="Search for recipes..."
           aria-label="Search"
@@ -33,52 +48,80 @@
           type="button"
           (click)="onSearch(searchTerm)"
         >
-          Search
+          <fa-icon [icon]="solidIcons.faSearch"></fa-icon>
         </button>
       </div>
-      <div class="d-flex ms-2">
+
+      <!-- Account dropdown or Sign In button -->
+      <div class="d-flex align-items-center">
         <ng-container *ngIf="account; else signInLink">
           <div class="dropdown">
             <a
-              class="btn btn-outline-primary dropdown-toggle"
+              class="btn btn-outline-primary dropdown-toggle d-flex align-items-center"
               href="#"
               role="button"
               id="dropdownMenuLink"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Hello, {{ account.username }}
+              <fa-icon [icon]="solidIcons.faUserCircle" class="me-2"></fa-icon>
+              Hello,
+              {{ account.username }}
             </a>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <ul
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="dropdownMenuLink"
+            >
               <li>
-                <a class="dropdown-item" routerLink="/profile/my-profile"
-                  >Profile</a
-                >
+                <a class="dropdown-item" routerLink="/profile/my-profile">
+                  <fa-icon [icon]="solidIcons.faUser" class="me-2"></fa-icon>
+                  Profile
+                </a>
               </li>
               <li>
-                <a class="dropdown-item" routerLink="/favorites">Favorites</a>
+                <a class="dropdown-item" routerLink="/favorites">
+                  <fa-icon [icon]="solidIcons.faHeart" class="me-2"></fa-icon>
+                  Favorites
+                </a>
               </li>
               <li>
-                <a class="dropdown-item" routerLink="/folders">Folders</a>
+                <a class="dropdown-item" routerLink="/folders">
+                  <fa-icon [icon]="solidIcons.faFolder" class="me-2"></fa-icon>
+                  Folders
+                </a>
               </li>
               <li>
-                <a class="dropdown-item" routerLink="/schedules">Schedules</a>
+                <a class="dropdown-item" routerLink="/schedules">
+                  <fa-icon
+                    [icon]="solidIcons.faCalendarAlt"
+                    class="me-2"
+                  ></fa-icon>
+                  Schedules
+                </a>
               </li>
               <li>
                 <a
-                  style="cursor: pointer"
-                  class="dropdown-item"
+                  class="dropdown-item text-danger"
                   (click)="onLogout()"
-                  >Logout</a
+                  style="cursor: pointer"
                 >
+                  <fa-icon
+                    [icon]="solidIcons.faSignOutAlt"
+                    class="me-2"
+                  ></fa-icon>
+                  Logout
+                </a>
               </li>
             </ul>
           </div>
         </ng-container>
+
+        <!-- Sign In link when not logged in -->
         <ng-template #signInLink>
-          <a class="btn btn-outline-primary me-2" routerLink="/auth/signin"
-            >Sign In</a
-          >
+          <a class="btn btn-outline-primary" routerLink="/auth/signin">
+            <fa-icon [icon]="solidIcons.faSignInAlt" class="me-1"></fa-icon>
+            Sign In
+          </a>
         </ng-template>
       </div>
     </div>

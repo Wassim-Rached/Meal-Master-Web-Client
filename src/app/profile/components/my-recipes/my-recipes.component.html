@@ -12,14 +12,14 @@
   <div *ngIf="recipes && recipes.length > 0; else noRecipes" class="container">
     <div class="row">
       <div
-        class="col-lg-4 col-md-6 col-sm-12 mb-4"
+        class="col-lg-6 col-md-6 col-sm-12 mb-2"
         *ngFor="let recipe of recipes; let i = index"
       >
         <app-recipe-card [recipe]="recipe"></app-recipe-card>
       </div>
     </div>
   </div>
-  <nav aria-label="Recipe pagination" class="mt-4">
+  <nav aria-label="Recipe pagination" class="mt-1">
     <ul class="pagination justify-content-center">
       <li class="page-item" [class.disabled]="currentPage < 1">
         <a

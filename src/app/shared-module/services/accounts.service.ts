@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 export interface Account {
   id: string;
   username: string;
+  avatarUrl: string;
 }
 
 export interface CreateAccountRequestBody {
@@ -28,12 +29,42 @@ export class AccountsService {
   }
 
   getMyAccount() {
-    return this.http.get<Account>(`${this.BASE_URL}/api/accounts/my`);
+    return this.http.get<Account>(`${this.BASE_URL}/api/accounts/my`).pipe(
+      map((account) => {
+        if (!account.avatarUrl) {
+          account.avatarUrl =
+            'https://cdn-icons-png.flaticon.com/512/306/306003.png';
+        }
+        return account;
+      })
+    );
   }
 
   deleteMyAccount(password: string): Observable<string> {
     return this.http.delete(
       `${this.BASE_URL}/api/accounts/my?password=${password}`,
+      {
+        responseType: 'text',
+      }
+    );
+  }
+
+  updateMyAccount(body: { avatarUrl: string }): Observable<string> {
+    return this.http.put(`${this.BASE_URL}/api/accounts/my`, body, {
+      responseType: 'text',
+    });
+  }
+
+  changePassword({
+    oldPassword,
+    newPassword,
+  }: {
+    oldPassword: string;
+    newPassword: string;
+  }): Observable<string> {
+    return this.http.put(
+      `${this.BASE_URL}/api/accounts/my/password?oldPassword=${oldPassword}&newPassword=${newPassword}`,
+      {},
       {
         responseType: 'text',
       }

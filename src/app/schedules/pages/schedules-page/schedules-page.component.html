@@ -1,3 +1,67 @@
-<p>schedules-page works!</p>
+<ng-template #loading>
+  <div
+    class="d-flex justify-content-center align-items-center"
+    style="height: 200px"
+  >
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</ng-template>
 
-<app-schedules-calendar />
+<ng-container *ngIf="schedules === undefined; else page">
+  <ng-container *ngTemplateOutlet="loading"></ng-container>
+</ng-container>
+
+<ng-template #page>
+  <div class="container mt-4">
+    <!-- Page Title and Description -->
+    <div class="text-center mb-4">
+      <h2 class="display-4">📅 Meals Schedule</h2>
+      <p class="lead text-muted pe-5 ps-5" style="font-style: italic">
+        Effortlessly organize your meals around your schedule! Whether you're
+        planning for the week, month, or just tomorrow, keep your favorite
+        recipes ready for every meal.
+      </p>
+    </div>
+
+    <!-- Create Schedule Section -->
+    <app-create-schedule (scheduleCreated)="refreshSchedules()" />
+
+    <!-- Accordion for Planned Schedules -->
+    <div class="accordion mt-4" id="plannedSchedulesAccordion">
+      <div class="accordion-item border-0">
+        <h2 class="accordion-header" id="plannedSchedulesHeading">
+          <button
+            class="accordion-button bg-light text-primary"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#plannedSchedulesCollapse"
+            aria-expanded="true"
+            aria-controls="plannedSchedulesCollapse"
+          >
+            Planned Schedules ({{ schedules?.length }})
+          </button>
+        </h2>
+        <div
+          id="plannedSchedulesCollapse"
+          class="accordion-collapse collapse show"
+          aria-labelledby="plannedSchedulesHeading"
+          data-bs-parent="#plannedSchedulesAccordion"
+        >
+          <div class="accordion-body p-0">
+            <app-list-schedules
+              (scheduleDeleted)="onScheduleDeleted($event)"
+              [schedules]="schedules!"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar Section -->
+    <div class="mt-4">
+      <app-schedules-calendar [events]="events" />
+    </div>
+  </div>
+</ng-template>

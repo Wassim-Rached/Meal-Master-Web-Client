@@ -1,6 +1,11 @@
 <ng-template #loading>
-  <div class="progress-bar">
-    <div class="progress-bar-value"></div>
+  <div
+    class="d-flex justify-content-center align-items-center"
+    style="height: 100px"
+  >
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
   </div>
 </ng-template>
 
@@ -9,7 +14,36 @@
 </ng-container>
 
 <ng-template #page>
-  <app-profile-header [account]="account!" />
-  <app-delete-my-account />
-  <app-my-recipes />
+  <!-- Profile Header -->
+  <div class="bg-light shadow-sm rounded p-4 mb-4">
+    <app-profile-header [account]="account!" />
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <!-- Update and Delete Account Section -->
+      <div class="col-md-4">
+        <div class="card shadow-sm mb-4">
+          <div class="card-body">
+            <h5 class="card-title text-primary">Account Settings</h5>
+            <app-update-my-account [account]="account!" />
+            <hr />
+            <app-change-my-password />
+            <hr />
+            <app-delete-my-account />
+          </div>
+        </div>
+      </div>
+
+      <!-- My Recipes Section -->
+      <div class="col-md-8">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title text-primary">My Recipes</h5>
+            <app-my-recipes />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </ng-template>

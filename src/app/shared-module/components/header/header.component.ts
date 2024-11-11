@@ -5,11 +5,25 @@ import { ToastrService } from 'ngx-toastr';
 import { Account } from '../../services/accounts.service';
 import { SharedModule } from '../../shared-module.module';
 import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+// fa-sign-in-alt
+import {
+  faSignOutAlt,
+  faSignInAlt,
+  faCalendarAlt,
+  faFolder,
+  faHeart,
+  faUser,
+  faUserCircle,
+  faSearch,
+  faPlusCircle,
+  faUtensils,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, FontAwesomeModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
@@ -44,5 +58,20 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/auth/signin']).then(() => {
       this.toastrService.info('Redirected to singin page');
     });
+  }
+
+  get solidIcons() {
+    return {
+      faSignOutAlt,
+      faSignInAlt,
+      faCalendarAlt,
+      faFolder,
+      faHeart,
+      faUser,
+      faUserCircle,
+      faSearch,
+      faPlusCircle,
+      faUtensils,
+    };
   }
 }

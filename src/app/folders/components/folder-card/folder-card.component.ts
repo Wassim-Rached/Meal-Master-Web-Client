@@ -5,11 +5,16 @@ import {
 } from '../../../shared-module/services/folders.service';
 import { SharedModule } from '../../../shared-module/shared-module.module';
 import { ToastrService } from 'ngx-toastr';
+// folder icon
+import { faFolder } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+// faTrash
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-folder-card',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, FontAwesomeModule],
   templateUrl: './folder-card.component.html',
   styleUrl: './folder-card.component.css',
 })
@@ -43,5 +48,13 @@ export class FolderCardComponent {
         this.isDeleting = false;
       },
     });
+  }
+
+  get faFolder() {
+    return faFolder;
+  }
+
+  get faTrash() {
+    return faTrash;
   }
 }

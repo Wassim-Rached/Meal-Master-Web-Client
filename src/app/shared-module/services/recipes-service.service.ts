@@ -114,6 +114,12 @@ export class RecipesService {
       responseType: 'text' as 'json',
     });
   }
+
+  deleteRecipe(id: string): Observable<string> {
+    return this.http.delete<string>(`${this.BASE_URL}/api/recipes/${id}`, {
+      responseType: 'text' as 'json',
+    });
+  }
 }
 
 export interface CreateRecipeRequestDTO {

@@ -1,25 +1,33 @@
-<div class="card shadow-sm" style="width: 100%">
+<div
+  class="card shadow-sm mb-4"
+  style="width: 100%; border-radius: 10px; overflow: hidden"
+>
   <img
     [src]="recipe.coverImgUrl"
     class="card-img-top img-fluid"
     alt="{{ recipe.title }}"
     style="height: 200px; object-fit: cover"
   />
-  <div class="card-body d-flex flex-column">
-    <h5 class="card-title">
+  <div class="card-body d-flex flex-column p-3">
+    <h5 class="card-title mb-2">
       <a
         [routerLink]="['/recipes', recipe.id]"
         class="text-decoration-none text-dark"
+        style="font-weight: bold"
         >{{ recipe.title }}</a
       >
     </h5>
-    <p class="card-text text-muted">{{ recipe.description }}</p>
+    <p class="card-text text-muted mb-3">{{ recipe.description }}</p>
     <div class="mt-auto">
-      <p class="card-text mb-1">
-        <strong>Cooking Time:</strong> {{ recipe.cookingTime }} mins
+      <p class="card-text mb-1 d-flex align-items-center">
+        <fa-icon [icon]="solidIcons.faStopwatch" class="me-2" />
+        <strong class="me-2">Cooking Time: </strong>
+        {{ recipe.cookingTime }} mins
       </p>
-      <p class="card-text">
-        <strong>Serving Size:</strong> {{ recipe.servingSize }} people
+      <p class="card-text d-flex align-items-center">
+        <fa-icon [icon]="solidIcons.faUserFriends" class="me-2" />
+        <strong class="me-2">Serving Size: </strong>
+        {{ recipe.servingSize }} people
       </p>
     </div>
   </div>

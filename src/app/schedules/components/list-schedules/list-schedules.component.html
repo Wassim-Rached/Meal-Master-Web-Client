@@ -1,0 +1,68 @@
+<ng-template #loading>
+  <div
+    class="d-flex justify-content-center align-items-center bg-light rounded shadow-sm p-3"
+    style="height: 120px"
+  >
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</ng-template>
+
+<ng-container *ngIf="schedules === undefined; else page">
+  <ng-container *ngTemplateOutlet="loading"></ng-container>
+</ng-container>
+
+<ng-template #page>
+  <div class="container p-4 bg-white rounded shadow">
+    <div *ngIf="schedules && schedules.length > 0; else noSchedules">
+      <ul class="list-group">
+        <li
+          class="list-group-item d-flex justify-content-between align-items-center py-3 px-4 mb-2 rounded bg-white border border-light shadow-sm"
+          *ngFor="let schedule of schedules"
+        >
+          <div>
+            <a
+              style="text-decoration: none"
+              [routerLink]="['/folders', schedule.folder.id]"
+            >
+              <h6 class="mb-1 text-dark fw-bold">
+                <fa-icon [icon]="solidIcons.faCalendar" class="me-1" />
+                {{ schedule.folder.name }}
+              </h6>
+            </a>
+            <small class="text-muted">
+              {{ schedule.scheduledDate | date : "fullDate" }} at
+              {{ schedule.scheduledDate | date : "shortTime" }}
+            </small>
+          </div>
+          <button
+            class="btn btn-outline-danger btn-sm d-flex align-items-center"
+            (click)="deleteSchedule(schedule.id)"
+            [disabled]="isBeingDeleted(schedule.id)"
+          >
+            <span *ngIf="!isBeingDeleted(schedule.id)">
+              Delete
+              <fa-icon [icon]="solidIcons.faCalendarXmark" class="ms-1" />
+            </span>
+            <span *ngIf="isBeingDeleted(schedule.id)">Deleting...</span>
+            <span
+              *ngIf="isBeingDeleted(schedule.id)"
+              class="spinner-border spinner-border-sm ms-1"
+            ></span>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- No schedules message -->
+    <ng-template #noSchedules>
+      <div class="text-center text-muted py-5">
+        <i class="fas fa-calendar-alt fa-2x mb-3"></i>
+        <p class="mb-0">
+          No schedules available. Start by creating a new schedule!
+        </p>
+      </div>
+    </ng-template>
+  </div>
+</ng-template>

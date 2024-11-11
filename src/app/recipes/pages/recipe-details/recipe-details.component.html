@@ -35,6 +35,20 @@
               >
                 update</a
               >
+
+              <button
+                class="btn btn-danger"
+                (click)="isDeleting ? null : deleteRecipe()"
+                [disabled]="isDeleting"
+              >
+                <span
+                  *ngIf="isDeleting"
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                <span *ngIf="!isDeleting">Delete Recipe</span>
+              </button>
               <p class="text-muted mb-0">
                 by <strong>{{ recipe.owner.username }}</strong>
               </p>

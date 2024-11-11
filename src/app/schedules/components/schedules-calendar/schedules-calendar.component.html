@@ -1,1 +1,79 @@
-<p>schedules-calendar works!</p>
+<div class="container mt-4">
+  <!-- View Toggle Buttons -->
+  <div class="text-center mb-4">
+    <div class="btn-group" role="group" aria-label="Calendar View Toggle">
+      <button
+        class="btn btn-outline-primary"
+        [class.active]="view === 'month'"
+        (click)="setView('month')"
+      >
+        Month
+      </button>
+      <button
+        class="btn btn-outline-primary"
+        [class.active]="view === 'week'"
+        (click)="setView('week')"
+      >
+        Week
+      </button>
+      <button
+        class="btn btn-outline-primary"
+        [class.active]="view === 'day'"
+        (click)="setView('day')"
+      >
+        Day
+      </button>
+    </div>
+  </div>
+
+  <!-- Navigation Controls -->
+  <div class="d-flex justify-content-between mb-4">
+    <button class="btn btn-outline-secondary" (click)="navigate('prev')">
+      <fa-icon [icon]="solidIcons.faChevronLeft" />
+      Previous
+    </button>
+    <button class="btn btn-outline-secondary" (click)="navigate('next')">
+      Next
+      <fa-icon [icon]="solidIcons.faChevronRight" />
+    </button>
+  </div>
+
+  <!-- Current Date Header -->
+  <div class="text-center mb-4">
+    <h4 *ngIf="view === 'month'">{{ getMonthYear() }}</h4>
+    <h4 *ngIf="view === 'week'">{{ getWeekHeader() }}</h4>
+    <h4 *ngIf="view === 'day'">{{ getDayHeader() }}</h4>
+  </div>
+
+  <!-- Calendar Views with Card Container -->
+  <div class="card shadow-lg">
+    <div class="card-body">
+      <!-- Month View -->
+      <mwl-calendar-month-view
+        *ngIf="view === 'month'"
+        [viewDate]="viewDate"
+        [events]="events"
+        class="calendar-view"
+        (eventClicked)="onEventClicked($event)"
+      ></mwl-calendar-month-view>
+
+      <!-- Week View -->
+      <mwl-calendar-week-view
+        *ngIf="view === 'week'"
+        [viewDate]="viewDate"
+        [events]="events"
+        class="calendar-view"
+        (eventClicked)="onEventClicked($event)"
+      ></mwl-calendar-week-view>
+
+      <!-- Day View -->
+      <mwl-calendar-day-view
+        *ngIf="view === 'day'"
+        [viewDate]="viewDate"
+        [events]="events"
+        class="calendar-view"
+        (eventClicked)="onEventClicked($event)"
+      ></mwl-calendar-day-view>
+    </div>
+  </div>
+</div>

@@ -9,11 +9,18 @@ import { SharedModule } from '../../../shared-module/shared-module.module';
 import { RecipeCardComponent } from '../../../recipes/components/recipe-card/recipe-card.component';
 import { Recipe } from '../../../shared-module/services/recipes-service.service';
 import { ToastrService } from 'ngx-toastr';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faTrash, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-folder-details',
   standalone: true,
-  imports: [SharedModule, NotFoundComponent, RecipeCardComponent],
+  imports: [
+    SharedModule,
+    NotFoundComponent,
+    RecipeCardComponent,
+    FontAwesomeModule,
+  ],
   templateUrl: './folder-details.component.html',
   styleUrl: './folder-details.component.css',
 })
@@ -74,5 +81,9 @@ export class FolderDetailsComponent implements OnInit {
 
   isRecipeBeingRemoved(recipeId: string) {
     return this.recipesBeingRemoved.has(recipeId);
+  }
+
+  get solidIcons() {
+    return { faTrash, faSearch };
   }
 }

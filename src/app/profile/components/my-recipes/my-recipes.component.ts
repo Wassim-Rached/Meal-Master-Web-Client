@@ -27,7 +27,7 @@ export class MyRecipesComponent implements OnInit {
   refreshMyRecipes(page = 0) {
     if (page < 0 || page >= this.totalPages) return;
     this.recipes = undefined;
-    this.recipesService.getMyRecipes({ size: 3, page }).subscribe({
+    this.recipesService.getMyRecipes({ size: 6, page }).subscribe({
       next: (response) => {
         this.recipes = response.content;
         this.currentPage = response.pageable.pageNumber;

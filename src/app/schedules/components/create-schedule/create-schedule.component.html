@@ -1,0 +1,75 @@
+<ng-template #loading>
+  <div
+    class="d-flex justify-content-center align-items-center"
+    style="height: 100px"
+  >
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</ng-template>
+
+<div>
+  <ng-container *ngIf="folders === undefined; else formSection">
+    <ng-container *ngTemplateOutlet="loading"></ng-container>
+  </ng-container>
+  <ng-template #formSection>
+    <form
+      [formGroup]="eventForm"
+      (ngSubmit)="onSubmit()"
+      class="p-4 bg-light rounded shadow-sm"
+    >
+      <h5 class="mb-3 text-primary">Schedule a New Meal</h5>
+
+      <!-- Folder Selection -->
+      <div class="form-group mb-3">
+        <label for="folderSelect" class="form-label"
+          >Select Folder <span class="text-danger">*</span></label
+        >
+        <select
+          [disabled]="!folders"
+          class="form-select"
+          id="folderSelect"
+          formControlName="folderId"
+          required
+        >
+          <option *ngFor="let folder of folders" [value]="folder.id">
+            {{ folder.name }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Date and Time Selection -->
+      <div class="form-group mb-3">
+        <label for="eventDate" class="form-label"
+          >Date and Time <span class="text-danger">*</span></label
+        >
+        <input
+          type="datetime-local"
+          class="form-control"
+          id="eventDate"
+          formControlName="scheduledDate"
+          required
+        />
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-end">
+        <button
+          type="submit"
+          class="btn btn-primary mt-3"
+          [disabled]="isSubmitting || eventForm.invalid"
+        >
+          {{ isSubmitting ? "Submitting..." : "Add Schedule" }}
+          <fa-icon [icon]="solidIcons.faCalendarPlus" class="ms-2" />
+          <span
+            *ngIf="isSubmitting"
+            class="spinner-border spinner-border-sm ms-2"
+            role="status"
+            aria-hidden="true"
+          ></span>
+        </button>
+      </div>
+    </form>
+  </ng-template>
+</div>

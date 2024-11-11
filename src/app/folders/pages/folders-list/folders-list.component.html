@@ -1,93 +1,136 @@
 <ng-template #loading>
-  <div class="progress-bar">
-    <div class="progress-bar-value"></div>
+  <div
+    class="d-flex justify-content-center align-items-center"
+    style="height: 200px"
+  >
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
   </div>
 </ng-template>
 
 <ng-container *ngIf="folders !== undefined; else loading">
-  <div class="container mt-4">
-    <div class="row mb-3">
-      <div class="col">
-        <h1 class="text-center">Folders</h1>
-      </div>
+  <div class="container my-5">
+    <!-- Page Title -->
+    <div class="text-center mb-5">
+      <h1 class="display-4">📂 My Folders</h1>
+      <p class="lead text-muted">
+        Organize your folders efficiently! Create, search, and manage all
+        folders in one place. Use folders to plan meals with the
+        <a routerLink="/schedules" style="text-decoration: none">
+          scheduling
+        </a>
+        and calendar features.
+      </p>
     </div>
-    <div class="input-group mb-3">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Search folders"
-        aria-label="Search folders"
-        #search
-        (keyup.enter)="searchFolders(search.value)"
-        (input)="searchFolders(search.value)"
-      />
-      <div class="input-group-append">
+
+    <!-- Search and Create Folder Section -->
+    <div class="row mb-4">
+      <!-- Search Bar -->
+      <div class="col-md-8 mb-2">
+        <div class="input-group shadow-sm">
+          <span class="input-group-text bg-light" id="searchFolders">
+            <fa-icon [icon]="solidIcons.faSearch" />
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search folders..."
+            aria-label="Search folders"
+            #search
+            (keyup.enter)="searchFolders(search.value)"
+            (input)="searchFolders(search.value)"
+          />
+          <button
+            class="btn btn-outline-primary"
+            type="button"
+            (click)="searchFolders(search.value)"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+
+      <!-- Create New Folder Button -->
+      <div class="col-md-4 mb-2 text-md-end">
         <button
-          class="btn btn-outline-secondary"
+          class="btn btn-primary w-100 shadow-sm"
           type="button"
-          (click)="searchFolders(search.value)"
+          data-bs-toggle="collapse"
+          data-bs-target="#createFolderCollapse"
+          aria-expanded="false"
+          aria-controls="createFolderCollapse"
         >
-          Search
+          <span class="me-2"> Create New Folder </span>
+
+          <fa-icon [icon]="solidIcons.faFolderPlus" />
         </button>
       </div>
     </div>
-    <div class="d-flex justify-content-end mb-3">
-      <button
-        class="btn btn-outline-primary"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#createFolderCollapse"
-        aria-expanded="false"
-        aria-controls="createFolderCollapse"
-      >
-        Create New Folder
-      </button>
-    </div>
+
+    <!-- Create Folder Form -->
     <div class="collapse" id="createFolderCollapse">
-      <div class="card">
+      <div class="card border-0 shadow-lg mb-4">
         <div class="card-body">
-          <div class="form-group">
-            <label for="folderName">Folder Name</label>
+          <div class="form-group mb-3">
+            <label for="folderName" class="form-label"
+              >Folder Name <span class="text-danger">*</span></label
+            >
             <input
-              (keyup.enter)="onCreateFolder(folderName.value)"
               type="text"
               class="form-control"
               id="folderName"
               #folderName
-              name="folderName"
-              required
+              placeholder="Enter folder name"
+              (keyup.enter)="onCreateFolder(folderName.value)"
               [disabled]="isCreatingFolder"
             />
           </div>
-          <button
-            type="button"
-            class="btn btn-primary mt-2"
-            [disabled]="isCreatingFolder"
-            (click)="onCreateFolder(folderName.value)"
-          >
-            {{ isCreatingFolder ? "Creating Folder..." : "Create Folder" }}
-          </button>
+          <div class="d-flex justify-content-end">
+            <button
+              type="button"
+              class="btn btn-success shadow-sm"
+              [disabled]="isCreatingFolder || folderName.value === ''"
+              (click)="onCreateFolder(folderName.value)"
+            >
+              <span class="me-2">
+                {{ isCreatingFolder ? "Save Folder..." : "Save Folder" }}
+              </span>
+              <fa-icon [icon]="solidIcons.faFloppyDisk" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="container mt-4">
-    <div class="row">
-      <div class="col-md-4 mb-3 d-flex" *ngFor="let folder of foldersList">
-        <app-folder-card
-          (folderDeleted)="onFolderDeleted($event)"
-          [folder]="folder"
-          class="flex-1 w-100"
-        />
+
+    <!-- Folders List -->
+    <div class="container mt-4">
+      <div class="row">
+        <div
+          class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex"
+          *ngFor="let folder of foldersList"
+        >
+          <app-folder-card
+            (folderDeleted)="onFolderDeleted($event)"
+            [folder]="folder"
+            class="flex-fill shadow-sm border rounded"
+          ></app-folder-card>
+        </div>
       </div>
+
+      <!-- No Folders Found Alert -->
       <div
         *ngIf="
           (foldersList && foldersList.length === 0) || folders?.length === 0
         "
-        class="alert alert-warning"
+        class="alert alert-info text-center mt-4"
         role="alert"
       >
-        No folders found.
+        <h4 class="alert-heading">No Folders Found</h4>
+        <p class="mb-0" *ngIf="!folders">
+          It looks like you haven't created any folders yet. Start organizing
+          your meals by creating a new folder above.
+        </p>
       </div>
     </div>
   </div>

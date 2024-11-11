@@ -1,3 +1,27 @@
-<div class="bg-success p-5">
-  <h1 class="text-center">{{ account.username }}</h1>
+<div
+  class="text-white py-5"
+  [ngStyle]="{
+    'background-image': 'url(' + backgroundImageUrl + ')',
+    'background-size': 'auto 100%',
+    'background-repeat': 'repeat-x'
+  }"
+>
+  <div class="container d-flex flex-column align-items-center">
+    <!-- Profile Avatar -->
+    <div
+      class="rounded-circle overflow-hidden border border-3 border-white mb-3"
+      style="width: 120px; height: 120px"
+    >
+      <img
+        *ngIf="account.avatarUrl"
+        [src]="account.avatarUrl"
+        alt="{{ account.username }}'s avatar"
+        class="img-fluid text-black"
+        style="width: 100%; height: 100%; object-fit: cover"
+      />
+    </div>
+
+    <!-- Username -->
+    <h1 class="text-center fw-bold mb-0 text-dark">{{ account.username }}</h1>
+  </div>
 </div>
