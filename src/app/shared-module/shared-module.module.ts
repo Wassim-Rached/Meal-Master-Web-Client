@@ -18,6 +18,7 @@ import { RequireUnAuthGuard } from '../guards/UnAuthGuard';
 import { CalendarUtils, DateAdapter, CalendarModule } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { SchedulesService } from './services/schedules.service';
+import { MessagesService } from './services/messages.service';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { SchedulesService } from './services/schedules.service';
     FavoritesService,
     FoldersService,
     SchedulesService,
+    MessagesService,
     RequireAuthGuard,
     RequireUnAuthGuard,
     CalendarUtils,

@@ -4,4 +4,5 @@ export const environment = {
   appVersion: packageInfo.version,
   production: true,
   backendUrl: 'https://meals-master.azurewebsites.net',
+  messageDisplayDurationInMs: 10000,
 };

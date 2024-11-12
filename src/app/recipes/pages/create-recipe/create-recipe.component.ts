@@ -16,6 +16,7 @@ import {
 } from '../../../shared-module/services/measurments-units.service';
 import { SharedModule } from '../../../shared-module/shared-module.module';
 import { ToastrService } from 'ngx-toastr';
+import { MessagesService } from '../../../shared-module/services/messages.service';
 
 @Component({
   selector: 'app-create-recipe',
@@ -35,10 +36,20 @@ export class CreateRecipeComponent implements OnInit {
     private recipesService: RecipesService,
     private ingredientsService: IngredientsService,
     private measurmentsUnitsService: MeasurmentsUnitsService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private messagesService: MessagesService
   ) {}
 
   ngOnInit() {
+    this.messagesService.pushMessage({
+      type: 'success',
+      content: 'Recipe created',
+      link: {
+        text: 'View Recipe',
+        url: `/recipes/${1}`,
+        type: 'internal',
+      },
+    });
     // fetch ingredients
     this.refreshIngredients();
     // fetch measurement units
@@ -148,12 +159,12 @@ export class CreateRecipeComponent implements OnInit {
       recipeIngredients:
         body.recipeIngredients as CreateRecipeIngredientRequestDTO[],
     };
-    console.log(requestBody);
 
     this.isCreating = true;
     this.recipesService.createRecipe(requestBody).subscribe({
       next: (res) => {
-        alert('Recipe created successfully');
+        this.toastrService.success('Recipe created successfully');
+
         this.isCreating = false;
       },
       error: (err) => {

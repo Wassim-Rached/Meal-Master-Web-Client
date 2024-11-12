@@ -1,23 +1,23 @@
 <div class="container mt-5 mb-5">
-  <div class="card shadow-sm">
-    <div class="card-header text-center bg-secondary pt-3 text-white">
-      <h3>Welcome to Meal Master! Let's Create a Delicious Recipe</h3>
+  <div class="card shadow-lg">
+    <div class="card-header text-center bg-primary pt-4 pb-4 text-white">
+      <h3>Create a Tasty Recipe with Meal Master</h3>
     </div>
     <div class="card-body">
       <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-        <div class="d-flex flex-column gap-2">
+        <div class="d-flex flex-column gap-3">
           <div class="row">
             <div class="col-md-8">
               <div class="form-group">
                 <label for="title" class="form-label"
-                  >Title <span class="text-danger">*</span></label
+                  >Recipe Title <span class="text-danger">*</span></label
                 >
                 <input
                   type="text"
                   id="title"
                   class="form-control"
                   formControlName="title"
-                  placeholder="Enter recipe title"
+                  placeholder="Enter the recipe title"
                 />
               </div>
             </div>
@@ -31,27 +31,29 @@
                   id="servingSize"
                   class="form-control"
                   formControlName="servingSize"
-                  placeholder="Enter serving size"
+                  placeholder="Number of servings"
                 />
               </div>
             </div>
           </div>
+
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
                 <label for="description" class="form-label"
-                  >Description <span class="text-danger">*</span></label
+                  >Recipe Description <span class="text-danger">*</span></label
                 >
                 <textarea
                   id="description"
                   class="form-control"
                   formControlName="description"
-                  rows="3"
-                  placeholder="Enter recipe description"
+                  rows="4"
+                  placeholder="Describe your recipe"
                 ></textarea>
               </div>
             </div>
           </div>
+
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
@@ -63,7 +65,7 @@
                   id="coverImgUrl"
                   class="form-control"
                   formControlName="coverImgUrl"
-                  placeholder="Enter cover image URL"
+                  placeholder="Enter image URL for your recipe cover"
                 />
               </div>
             </div>
@@ -74,7 +76,6 @@
           <div class="col-md-6 mb-3">
             <div class="accordion" id="instructionsAccordion">
               <div class="accordion-item">
-                <!-- Title Button -->
                 <h2 class="accordion-header" id="instructionsHeading">
                   <button
                     class="accordion-button"
@@ -84,10 +85,9 @@
                     aria-expanded="true"
                     aria-controls="instructionsCollapse"
                   >
-                    INSTRUCTIONS ({{ instructionsFormArray.length }})
+                    Instructions ({{ instructionsFormArray.length }})
                   </button>
                 </h2>
-                <!-- Collapsible Content -->
                 <div
                   id="instructionsCollapse"
                   class="accordion-collapse collapse show"
@@ -102,14 +102,12 @@
                           let i = index
                         "
                         [formGroupName]="i"
-                        class="form-group border p-3 mb-3 rounded"
+                        class="form-group p-3 border rounded mb-3 shadow-sm"
                       >
                         <div
                           class="d-flex justify-content-between align-items-center"
                         >
-                          <span class="badge bg-primary"
-                            >Instruction {{ i + 1 }}</span
-                          >
+                          <span class="badge bg-info">Step {{ i + 1 }}</span>
                           <div>
                             <button
                               type="button"
@@ -117,7 +115,7 @@
                               (click)="moveInstructionUp(i)"
                               [disabled]="i === 0"
                             >
-                              Up
+                              ↑
                             </button>
                             <button
                               type="button"
@@ -127,7 +125,7 @@
                                 i === instructionsFormArray.length - 1
                               "
                             >
-                              Down
+                              ↓
                             </button>
                           </div>
                         </div>
@@ -142,7 +140,7 @@
                               id="timeEstimate_{{ i }}"
                               class="form-control"
                               formControlName="timeEstimate"
-                              placeholder="Time Estimate (minutes)"
+                              placeholder="Minutes"
                             />
                           </div>
                         </div>
@@ -156,8 +154,8 @@
                               id="text_{{ i }}"
                               class="form-control"
                               formControlName="text"
-                              rows="1"
-                              placeholder="Instruction Text"
+                              rows="2"
+                              placeholder="Describe this step"
                             ></textarea>
                           </div>
                         </div>
@@ -165,7 +163,7 @@
                           <div class="col-md-12 d-flex justify-content-end">
                             <button
                               type="button"
-                              class="btn btn-outline-danger btn-block"
+                              class="btn btn-outline-danger btn-sm"
                               (click)="removeInstruction(i)"
                             >
                               Remove
@@ -186,56 +184,50 @@
               </div>
             </div>
           </div>
+
           <div class="col-md-6">
-            <div class="accordion" id="descriptionAccordion">
+            <div class="accordion" id="ingredientsAccordion">
               <div class="accordion-item">
-                <!-- Title Button -->
-                <h2 class="accordion-header" id="descriptionHeading">
+                <h2 class="accordion-header" id="ingredientsHeading">
                   <button
                     class="accordion-button"
                     type="button"
                     data-bs-toggle="collapse"
-                    data-bs-target="#descriptionCollapse"
+                    data-bs-target="#ingredientsCollapse"
                     aria-expanded="true"
-                    aria-controls="descriptionCollapse"
+                    aria-controls="ingredientsCollapse"
                   >
-                    INGREDIENTS ({{ recipeIngredientsFormArray.length }})
+                    Ingredients ({{ recipeIngredientsFormArray.length }})
                   </button>
                 </h2>
-                <!-- Collapsible Content -->
                 <div
-                  id="descriptionCollapse"
+                  id="ingredientsCollapse"
                   class="accordion-collapse collapse show"
-                  aria-labelledby="descriptionHeading"
-                  data-bs-parent="#descriptionAccordion"
+                  aria-labelledby="ingredientsHeading"
+                  data-bs-parent="#ingredientsAccordion"
                 >
                   <div class="accordion-body">
                     <div formArrayName="recipeIngredients">
                       <div
                         *ngFor="
-                          let recipeIngredient of recipeIngredientsFormArray.controls;
+                          let ingredient of recipeIngredientsFormArray.controls;
                           let i = index
                         "
                         [formGroupName]="i"
-                        class="form-group border p-3 mb-3 rounded"
+                        class="form-group p-3 border rounded mb-3 shadow-sm"
                       >
-                        <div
-                          style="
-                            height: 31px;
-                            display: flex;
-                            align-items: center;
-                          "
-                        >
-                          <span class="badge bg-primary"
+                        <div class="d-flex align-items-center">
+                          <span class="badge bg-warning"
                             >Ingredient {{ i + 1 }}</span
                           >
                         </div>
-                        <div class="row">
-                          <div class="col-md-12 mt-2">
+                        <div class="row mt-2">
+                          <div class="col-md-12">
                             <label for="ingredientId_{{ i }}"
                               >Ingredient
                               <span class="text-danger">*</span></label
-                            ><select
+                            >
+                            <select
                               id="ingredientId_{{ i }}"
                               class="form-control"
                               formControlName="ingredientId"
@@ -252,8 +244,7 @@
                         <div class="row mt-2">
                           <div class="col-md-6">
                             <label for="measurementUnitId_{{ i }}"
-                              >Measurement Unit
-                              <span class="text-danger">*</span></label
+                              >Unit <span class="text-danger">*</span></label
                             >
                             <select
                               id="measurementUnitId_{{ i }}"
@@ -269,7 +260,9 @@
                             </select>
                           </div>
                           <div class="col-md-6">
-                            <label for="amount_{{ i }}">Amount</label>
+                            <label for="amount_{{ i }}"
+                              >Amount <span class="text-danger">*</span></label
+                            >
                             <input
                               type="number"
                               id="amount_{{ i }}"
@@ -283,7 +276,7 @@
                           <div class="col-md-12 d-flex justify-content-end">
                             <button
                               type="button"
-                              class="btn btn-outline-danger btn-block"
+                              class="btn btn-outline-danger btn-sm"
                               (click)="removeRecipeIngredient(i)"
                             >
                               Remove
@@ -306,10 +299,10 @@
           </div>
         </div>
 
-        <div class="d-flex justify-content-end">
+        <div class="d-flex justify-content-end mt-4">
           <button
             type="submit"
-            class="btn btn-primary mt-3"
+            class="btn btn-primary btn-lg"
             [disabled]="!formGroup.valid || isCreating"
           >
             <span

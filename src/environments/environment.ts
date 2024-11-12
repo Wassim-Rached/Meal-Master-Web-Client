@@ -8,6 +8,7 @@ export const environment = {
   appVersion: packageInfo.version,
   production: true,
   backendUrl: 'http://localhost:8080',
+  messageDisplayDurationInMs: 10000,
 };
 /*
  * For easier debugging in development mode, you can import the following file

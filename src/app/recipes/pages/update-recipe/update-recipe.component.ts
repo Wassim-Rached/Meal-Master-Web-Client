@@ -210,12 +210,21 @@ export class UpdateRecipeComponent implements OnInit {
     const temp = instructions[index];
     instructions[index] = instructions[index - 1];
     instructions[index - 1] = temp;
+
+    // set the form step number
+    instructions[index].get('stepNumber')?.setValue(index + 1);
+    instructions[index - 1].get('stepNumber')?.setValue(index);
   }
+
   moveInstructionDown(index: number) {
     const instructions = this.instructionsFormArray.controls;
     if (index === instructions.length - 1) return;
     const temp = instructions[index];
     instructions[index] = instructions[index + 1];
     instructions[index + 1] = temp;
+
+    // set the form step number
+    instructions[index].get('stepNumber')?.setValue(index + 2);
+    instructions[index - 1].get('stepNumber')?.setValue(index);
   }
 }
