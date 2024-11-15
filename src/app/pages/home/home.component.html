@@ -1,14 +1,117 @@
 <div class="container mt-5 text-center">
-  <div class="jumbotron bg-light text-dark">
-    <h1 class="display-4">Welcome to Meal Master!</h1>
-    <p class="lead">
-      Your one-stop solution for creating and sharing recipes in one place.
+  <!-- Jumbotron Section -->
+  <div class="jumbotron bg-light text-dark rounded-3 shadow-sm p-5">
+    <h1 class="display-3 fw-bold mb-4 text-dark">
+      Welcome to <span class="text-muted">Meal Master</span>!
+    </h1>
+    <p class="lead mb-4 text-muted">
+      Your personalized culinary companion for discovering, saving, and planning
+      meals.
     </p>
-    <hr class="my-4 bg-dark" />
-    <p>
-      Explore new recipes, share your own, and enjoy the culinary journey with
-      our community.
+    <hr class="my-4 bg-light" />
+    <p class="text-secondary">
+      Explore a wide variety of recipes tailored to your taste, save your
+      favorites to access later, and plan your meals effortlessly with our
+      integrated schedule.
     </p>
+    <a routerLink="/recipes/search" class="btn btn-outline-dark btn-lg mt-4">
+      Start Exploring
+    </a>
   </div>
+
+  <!-- Recommendations Component -->
   <app-recomendations></app-recomendations>
+
+  <!-- What the Website Provides Section -->
+  <div class="mt-5">
+    <h2 class="fw-bold text-secondary mb-4">What Meal Master Provides</h2>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="card p-4 shadow-sm border-light rounded-3 hover-effect">
+          <div class="card-body">
+            <h5 class="card-title text-dark">
+              <fa-icon [icon]="solidIcons.faStar" class="me-2"></fa-icon>
+              Personalized Recommendations
+            </h5>
+            <p class="card-text text-muted">
+              Get recipe suggestions based on your preferences and past
+              activity.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card p-4 shadow-sm border-light rounded-3 hover-effect">
+          <div class="card-body">
+            <h5 class="card-title text-dark">
+              <fa-icon [icon]="solidIcons.faHeart" class="me-2"></fa-icon> Save
+              to Favorites
+            </h5>
+            <p class="card-text text-muted">
+              Bookmark your favorite recipes for easy access later.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card p-4 shadow-sm border-light rounded-3 hover-effect">
+          <div class="card-body">
+            <h5 class="card-title text-dark">
+              <fa-icon [icon]="solidIcons.faCalendarAlt" class="me-2"></fa-icon>
+              Meal Planning
+            </h5>
+            <p class="card-text text-muted">
+              Plan your meals ahead of time and organize them in a simple
+              schedule.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card p-4 shadow-sm border-light rounded-3 hover-effect">
+          <div class="card-body">
+            <h5 class="card-title text-dark">
+              <fa-icon [icon]="solidIcons.faUtensils" class="me-2"></fa-icon>
+              Explore Diverse Recipes
+            </h5>
+            <p class="card-text text-muted">
+              Find a wide range of recipes from different cuisines and
+              difficulty levels.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card p-4 shadow-sm border-light rounded-3 hover-effect">
+          <div class="card-body">
+            <h5 class="card-title text-dark">
+              <fa-icon
+                [icon]="solidIcons.faClipboardList"
+                class="me-2"
+              ></fa-icon>
+              Interactive Cooking Instructions
+            </h5>
+            <p class="card-text text-muted">
+              Follow step-by-step guides to make cooking easier and more
+              enjoyable.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card p-4 shadow-sm border-light rounded-3 hover-effect">
+          <div class="card-body">
+            <h5 class="card-title text-dark">
+              <fa-icon [icon]="solidIcons.faUsers" class="me-2"></fa-icon>
+              Community Support
+            </h5>
+            <p class="card-text text-muted">
+              Join a community of food lovers, share your recipes, and get
+              feedback.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

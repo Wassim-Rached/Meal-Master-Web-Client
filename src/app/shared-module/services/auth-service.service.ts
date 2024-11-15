@@ -31,6 +31,7 @@ export class AuthService {
     if (this.isAuthenticated()) {
       this.accountsService.getMyAccount().subscribe({
         next: (account: Account) => {
+          console.log('loaded account : ', account);
           this.currentAccountSubject.next(account);
         },
         error: (error) => {

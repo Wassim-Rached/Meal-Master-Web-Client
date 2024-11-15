@@ -2,12 +2,20 @@ import { Routes } from '@angular/router';
 import { NotFoundComponent } from './shared-module/components/not-found/not-found.component';
 import { RequireUnAuthGuard } from './guards/UnAuthGuard';
 import { RequireAuthGuard } from './guards/AuthGuard';
+import { DevTeamComponent } from './pages/dev-team/dev-team.component';
 
 export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
       import('./pages/home/home.component').then((m) => m.HomeComponent),
+  },
+  {
+    path: 'dev-team',
+    loadComponent: () =>
+      import('./pages/dev-team/dev-team.component').then(
+        (m) => m.DevTeamComponent
+      ),
   },
   {
     path: 'recipes',

@@ -1,0 +1,56 @@
+<!-- team.component.html -->
+<div class="container mt-5">
+  <!-- Title Section -->
+  <div class="text-center mb-5">
+    <h2 class="fw-bold text-dark mb-3">🚀 Meet Our Development Team 👩‍💻👨‍💻</h2>
+    <p class="lead text-muted" style="font-style: italic">
+      Our talented team is comprised of third-year Information Technology
+      students from ISET Charguia, specializing in System Information
+      Development. This project was developed as part of an integration project
+      for university, dedicating around 5 hours a week for 2 months. We're proud
+      of our achievements and excited to share our journey with you!
+    </p>
+  </div>
+
+  <!-- Team Members Section -->
+  <div class="row">
+    <!-- Loop through each developer in the developers array -->
+    <div class="col-md-6 mb-4" *ngFor="let developer of developers">
+      <div class="card bg-light shadow-sm border-0 rounded-3">
+        <!-- Developer Image -->
+        <img
+          [src]="developer.image"
+          class="card-img-top rounded-circle mx-auto d-block mt-3"
+          alt="{{ developer.name }}"
+          style="width: 150px; height: 150px; object-fit: cover"
+        />
+
+        <div class="card-body text-center">
+          <!-- Developer Name and Role -->
+          <h5 class="card-title">{{ developer.name }}</h5>
+          <p class="card-text text-muted">{{ developer.role }}</p>
+
+          <!-- Social Media Links -->
+          <div class="d-flex justify-content-center gap-3">
+            <a
+              [href]="developer.githubLink"
+              class="btn btn-outline-dark"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <fa-icon [icon]="solidIcons.faGithub" class="me-2" /> GitHub
+            </a>
+            <a
+              [href]="developer.linkedinLink"
+              class="btn btn-outline-primary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <fa-icon [icon]="solidIcons.faLinkedin" class="me-2" /> LinkedIn
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

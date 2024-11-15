@@ -1,0 +1,26 @@
+/* Card hover effect */
+.recipe-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Image zoom on hover */
+.img-hover-zoom {
+  overflow: hidden; /* Ensures the image stays within the card */
+}
+
+.recipe-image:hover {
+  transform: scale(1.05); /* Zooms the image */
+}
+
+.heart-icon {
+  transition: color 0.3s ease-in-out;
+}
+
+.btn-outline-danger:hover .heart-icon {
+  color: white;
+}
+
+.btn-danger:hover .heart-icon {
+  color: white;
+}

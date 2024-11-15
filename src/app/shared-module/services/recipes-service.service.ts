@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Ingredient } from './ingredients.service';
 import { MeasurementUnit } from './measurments-units.service';
 import { environment } from '../../../environments/environment';
@@ -53,9 +53,19 @@ export class RecipesService {
   constructor(private http: HttpClient) {}
 
   getRecipesRecommendations(): Observable<Recipe[]> {
-    return this.http.get<Recipe[]>(
-      `${this.BASE_URL}/api/recipes/recommendation`
-    );
+    return this.http
+      .get<Recipe[]>(`${this.BASE_URL}/api/recipes/recommendation`)
+      .pipe(
+        map((recipes) =>
+          recipes.map((recipe) => {
+            if (!recipe.owner.avatarUrl) {
+              recipe.owner.avatarUrl =
+                'https://cdn-icons-png.flaticon.com/512/306/306003.png';
+            }
+            return recipe;
+          })
+        )
+      );
   }
 
   searchRecipes(searchParams: RecipeSearchParams): Observable<Page<Recipe>> {

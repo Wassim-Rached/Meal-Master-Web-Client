@@ -14,6 +14,8 @@ import {
 
 import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
+import { Account } from '../../../shared-module/services/accounts.service';
+import { AuthService } from '../../../shared-module/services/auth-service.service';
 
 @Component({
   selector: 'app-recipe-details',
@@ -27,17 +29,25 @@ export class RecipeDetailsComponent implements OnInit {
   isFavorite: boolean | undefined = undefined;
   folders?: Folder[];
   isDeleting = false;
+  currentAccount: Account | null = null;
 
   constructor(
     private recipeService: RecipesService,
     private route: ActivatedRoute,
     private favoritesService: FavoritesService,
     private foldersService: FoldersService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
     this.refreshRecipe();
+    this.authService.currentAccount$.subscribe({
+      next: (account) => {
+        console.log({ account });
+        this.currentAccount = account;
+      },
+    });
   }
 
   refreshRecipe() {

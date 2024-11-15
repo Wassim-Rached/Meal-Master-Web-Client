@@ -35,10 +35,10 @@ export class AppComponent implements OnInit {
       this.messages = messages;
     });
 
-    this.messagesService.pushMessage({
-      content: 'Welcome to Meal Master!',
-      type: 'info',
-    });
+    // this.messagesService.pushMessage({
+    //   content: 'Welcome to Meal Master!',
+    //   type: 'info',
+    // });
 
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {

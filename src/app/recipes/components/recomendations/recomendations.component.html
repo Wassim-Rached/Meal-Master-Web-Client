@@ -1,12 +1,21 @@
 <ng-template #loading>
-  <div class="progress-bar">
-    <div class="progress-bar-value"></div>
+  <div class="progress-bar-container mt-5">
+    <div class="progress-bar progress-bar-striped progress-bar-animated">
+      <div class="progress-bar-value" style="width: 100%"></div>
+    </div>
   </div>
 </ng-template>
 
 <div class="recommendations container mt-5" *ngIf="recipes; else loading">
-  <h2 class="text-center mb-4">Recommended Recipes</h2>
-  <div class="row">
+  <!-- Simplified Title Section -->
+  <div class="text-center mb-4">
+    <h2 class="h3 text-secondary mb-2" style="font-weight: 600">
+      Our Recommendations
+    </h2>
+  </div>
+
+  <!-- Recipes Grid -->
+  <div class="row g-4">
     <div class="col-md-4 mb-4" *ngFor="let recipe of recipes">
       <app-recipe-card [recipe]="recipe" />
     </div>

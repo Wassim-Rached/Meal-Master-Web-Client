@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit {
 
   onSearch(input: HTMLInputElement) {
     const search = input.value;
-    console.log('search', search);
+
     this.router.navigate(['/recipes/search'], {
       queryParams: { search },
     });
@@ -49,6 +49,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.currentAccount$.subscribe((account) => {
+      console.log('header recivoed account', account);
       this.account = account;
     });
   }
