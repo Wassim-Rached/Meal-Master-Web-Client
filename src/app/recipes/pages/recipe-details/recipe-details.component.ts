@@ -16,7 +16,15 @@ import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { Account } from '../../../shared-module/services/accounts.service';
 import { AuthService } from '../../../shared-module/services/auth-service.service';
-
+// fa clock
+import {
+  faArrowRight,
+  faClock,
+  faListUl,
+  faMortarPestle,
+  faUtensils,
+} from '@fortawesome/free-solid-svg-icons';
+import { Meta } from '@angular/platform-browser';
 @Component({
   selector: 'app-recipe-details',
   standalone: true,
@@ -30,6 +38,7 @@ export class RecipeDetailsComponent implements OnInit {
   folders?: Folder[];
   isDeleting = false;
   currentAccount: Account | null = null;
+  isLoadingFavorite = false;
 
   constructor(
     private recipeService: RecipesService,
@@ -37,17 +46,39 @@ export class RecipeDetailsComponent implements OnInit {
     private favoritesService: FavoritesService,
     private foldersService: FoldersService,
     private toastr: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private meta: Meta
   ) {}
 
   ngOnInit() {
     this.refreshRecipe();
     this.authService.currentAccount$.subscribe({
       next: (account) => {
-        console.log({ account });
+        console.log('loaded account', account);
         this.currentAccount = account;
       },
     });
+  }
+
+  updateMetaTags(recipe: Recipe) {
+    this.meta.updateTag({ name: 'title', content: recipe.title });
+    this.meta.updateTag({
+      name: 'description',
+      content: recipe.description || 'Enjoy ' + recipe.title,
+    });
+    this.meta.updateTag({ name: 'image', content: recipe.coverImgUrl || '' });
+    this.meta.updateTag({ name: 'url', content: window.location.href });
+
+    this.meta.updateTag({ name: 'og:title', content: recipe.title });
+    this.meta.updateTag({
+      name: 'og:description',
+      content: recipe.description || 'Enjoy ' + recipe.title,
+    });
+    this.meta.updateTag({
+      name: 'og:image',
+      content: recipe.coverImgUrl || '',
+    });
+    this.meta.updateTag({ name: 'og:url', content: window.location.href });
   }
 
   refreshRecipe() {
@@ -56,6 +87,7 @@ export class RecipeDetailsComponent implements OnInit {
     this.recipeService.getRecipeById(id).subscribe({
       next: (recipe) => {
         this.recipe = recipe;
+        this.updateMetaTags(recipe);
         this.refreshIsFavorite(this.recipe);
         this.refreshFolders();
       },
@@ -80,27 +112,33 @@ export class RecipeDetailsComponent implements OnInit {
   }
 
   addToFavorites(recipe: Recipe) {
+    this.isLoadingFavorite = true;
     this.favoritesService.addRecipeToFavorites(recipe.id).subscribe({
       next: () => {
         this.toastr.success('Recipe added to favorites!');
         this.isFavorite = true;
+        this.isLoadingFavorite = false;
       },
       error: (error) => {
         console.error(error);
         this.toastr.error('Failed to add recipe to favorites');
+        this.isLoadingFavorite = false;
       },
     });
   }
 
   removeFromFavorites(recipe: Recipe) {
+    this.isLoadingFavorite = true;
     this.favoritesService.removeRecipeFromFavorites(recipe.id).subscribe({
       next: () => {
         this.toastr.success('Recipe removed from favorites!');
         this.isFavorite = false;
+        this.isLoadingFavorite = false;
       },
       error: (error) => {
         console.error(error);
         this.toastr.error('Failed to remove recipe from favorites');
+        this.isLoadingFavorite = false;
       },
     });
   }
@@ -221,5 +259,23 @@ export class RecipeDetailsComponent implements OnInit {
   get shareDescription() {
     if (!this.recipe) return '';
     return this.recipe.title;
+  }
+
+  get solidIcons() {
+    return {
+      faArrowRight,
+      faClock,
+      faListUl,
+      faMortarPestle,
+      faUtensils,
+    };
+  }
+
+  get isOwner() {
+    console.log({ recipe: this.recipe, currentAccount: this.currentAccount });
+    if (!this.recipe) return false;
+    if (!this.currentAccount) return false;
+
+    return this.recipe.owner.id === this.currentAccount.id;
   }
 }

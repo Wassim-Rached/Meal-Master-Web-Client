@@ -5,15 +5,24 @@
 </ng-template>
 
 <ng-container *ngIf="recipes; else loading">
-  <h1 class="text-center my-4">Favorites</h1>
-  <div class="container">
-    <div *ngIf="recipes.length === 0" class="alert alert-warning text-center">
-      <p>No favorites available.</p>
-      <p>Browse our recipes and add your favorites to see them here.</p>
+  <div class="container my-5">
+    <div class="text-center mb-5">
+      <h1 class="display-4">❤️ My Favorites</h1>
+      <p class="lead text-muted pe-5 ps-5">
+        Discover all your favorite recipes in one place! Add recipes as you go
+        and easily access them whenever you're in the mood to cook. Browse
+        through our collection, and start saving your culinary delights!
+      </p>
     </div>
-    <div class="row">
-      <div *ngFor="let recipe of recipes" class="col-md-4 mb-4">
-        <app-recipe-card [recipe]="recipe" class="card" />
+    <div class="container">
+      <div *ngIf="recipes.length === 0" class="alert alert-warning text-center">
+        <p>No favorites available.</p>
+        <p>Browse our recipes and add your favorites to see them here.</p>
+      </div>
+      <div class="row">
+        <div *ngFor="let recipe of recipes" class="col-md-4 mb-4">
+          <app-recipe-card [recipe]="recipe" />
+        </div>
       </div>
     </div>
   </div>

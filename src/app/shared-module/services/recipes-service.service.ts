@@ -100,7 +100,15 @@ export class RecipesService {
   }
 
   getRecipeById(id: string): Observable<Recipe> {
-    return this.http.get<Recipe>(`${this.BASE_URL}/api/recipes/${id}`);
+    return this.http.get<Recipe>(`${this.BASE_URL}/api/recipes/${id}`).pipe(
+      map((recipe) => {
+        if (!recipe.owner.avatarUrl) {
+          recipe.owner.avatarUrl =
+            'https://cdn-icons-png.flaticon.com/512/306/306003.png';
+        }
+        return recipe;
+      })
+    );
   }
 
   getMyRecipes({

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-light bg-dark shadow-sm">
   <div class="container-fluid">
     <!-- Brand -->
     <a class="navbar-brand fw-bold text-primary" href="#">
@@ -23,7 +23,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a
-            class="nav-link d-flex align-items-center"
+            class="nav-link d-flex align-items-center text-white"
             routerLink="/recipes/create"
           >
             Create Recipe
@@ -42,11 +42,13 @@
           name="search"
           #searchTerm
           (keydown.enter)="onSearch(searchTerm)"
+          style="border-top-right-radius: 0; border-bottom-right-radius: 0"
         />
         <button
-          class="btn btn-outline-success"
+          class="btn bg-secondary text-white"
           type="button"
           (click)="onSearch(searchTerm)"
+          style="border-radius: 0"
         >
           <fa-icon [icon]="solidIcons.faSearch"></fa-icon>
         </button>

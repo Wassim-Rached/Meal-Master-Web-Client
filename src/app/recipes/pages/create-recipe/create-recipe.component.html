@@ -1,318 +1,321 @@
 <div class="container mt-5 mb-5">
-  <div class="card shadow-lg">
-    <div class="card-header text-center bg-primary pt-4 pb-4 text-white">
-      <h3>Create a Tasty Recipe with Meal Master</h3>
-    </div>
-    <div class="card-body">
-      <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-        <div class="d-flex flex-column gap-3">
-          <div class="row">
-            <div class="col-md-8">
-              <div class="form-group">
-                <label for="title" class="form-label"
-                  >Recipe Title <span class="text-danger">*</span></label
-                >
-                <input
-                  type="text"
-                  id="title"
-                  class="form-control"
-                  formControlName="title"
-                  placeholder="Enter the recipe title"
-                />
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="servingSize" class="form-label"
-                  >Serving Size <span class="text-danger">*</span></label
-                >
-                <input
-                  type="number"
-                  id="servingSize"
-                  class="form-control"
-                  formControlName="servingSize"
-                  placeholder="Number of servings"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label for="description" class="form-label"
-                  >Recipe Description <span class="text-danger">*</span></label
-                >
-                <textarea
-                  id="description"
-                  class="form-control"
-                  formControlName="description"
-                  rows="4"
-                  placeholder="Describe your recipe"
-                ></textarea>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label for="coverImgUrl" class="form-label"
-                  >Cover Image URL <span class="text-danger">*</span></label
-                >
-                <input
-                  type="text"
-                  id="coverImgUrl"
-                  class="form-control"
-                  formControlName="coverImgUrl"
-                  placeholder="Enter image URL for your recipe cover"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row mt-4">
-          <div class="col-md-6 mb-3">
-            <div class="accordion" id="instructionsAccordion">
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="instructionsHeading">
-                  <button
-                    class="accordion-button"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#instructionsCollapse"
-                    aria-expanded="true"
-                    aria-controls="instructionsCollapse"
-                  >
-                    Instructions ({{ instructionsFormArray.length }})
-                  </button>
-                </h2>
-                <div
-                  id="instructionsCollapse"
-                  class="accordion-collapse collapse show"
-                  aria-labelledby="instructionsHeading"
-                  data-bs-parent="#instructionsAccordion"
-                >
-                  <div class="accordion-body">
-                    <div formArrayName="instructions">
-                      <div
-                        *ngFor="
-                          let instruction of instructionsFormArray.controls;
-                          let i = index
-                        "
-                        [formGroupName]="i"
-                        class="form-group p-3 border rounded mb-3 shadow-sm"
-                      >
-                        <div
-                          class="d-flex justify-content-between align-items-center"
-                        >
-                          <span class="badge bg-info">Step {{ i + 1 }}</span>
-                          <div>
-                            <button
-                              type="button"
-                              class="btn btn-outline-secondary btn-sm me-2"
-                              (click)="moveInstructionUp(i)"
-                              [disabled]="i === 0"
-                            >
-                              ↑
-                            </button>
-                            <button
-                              type="button"
-                              class="btn btn-outline-secondary btn-sm"
-                              (click)="moveInstructionDown(i)"
-                              [disabled]="
-                                i === instructionsFormArray.length - 1
-                              "
-                            >
-                              ↓
-                            </button>
-                          </div>
-                        </div>
-                        <div class="row mt-2">
-                          <div class="col-md-12">
-                            <label for="timeEstimate_{{ i }}"
-                              >Time Estimate (minutes)
-                              <span class="text-danger">*</span></label
-                            >
-                            <input
-                              type="number"
-                              id="timeEstimate_{{ i }}"
-                              class="form-control"
-                              formControlName="timeEstimate"
-                              placeholder="Minutes"
-                            />
-                          </div>
-                        </div>
-                        <div class="row mt-2">
-                          <div class="col-md-12">
-                            <label for="text_{{ i }}"
-                              >Instruction Text
-                              <span class="text-danger">*</span></label
-                            >
-                            <textarea
-                              id="text_{{ i }}"
-                              class="form-control"
-                              formControlName="text"
-                              rows="2"
-                              placeholder="Describe this step"
-                            ></textarea>
-                          </div>
-                        </div>
-                        <div class="row mt-4">
-                          <div class="col-md-12 d-flex justify-content-end">
-                            <button
-                              type="button"
-                              class="btn btn-outline-danger btn-sm"
-                              (click)="removeInstruction(i)"
-                            >
-                              Remove
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        class="btn btn-outline-success mt-2"
-                        (click)="addInstruction()"
-                      >
-                        Add Instruction
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6">
-            <div class="accordion" id="ingredientsAccordion">
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="ingredientsHeading">
-                  <button
-                    class="accordion-button"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#ingredientsCollapse"
-                    aria-expanded="true"
-                    aria-controls="ingredientsCollapse"
-                  >
-                    Ingredients ({{ recipeIngredientsFormArray.length }})
-                  </button>
-                </h2>
-                <div
-                  id="ingredientsCollapse"
-                  class="accordion-collapse collapse show"
-                  aria-labelledby="ingredientsHeading"
-                  data-bs-parent="#ingredientsAccordion"
-                >
-                  <div class="accordion-body">
-                    <div formArrayName="recipeIngredients">
-                      <div
-                        *ngFor="
-                          let ingredient of recipeIngredientsFormArray.controls;
-                          let i = index
-                        "
-                        [formGroupName]="i"
-                        class="form-group p-3 border rounded mb-3 shadow-sm"
-                      >
-                        <div class="d-flex align-items-center">
-                          <span class="badge bg-warning"
-                            >Ingredient {{ i + 1 }}</span
-                          >
-                        </div>
-                        <div class="row mt-2">
-                          <div class="col-md-12">
-                            <label for="ingredientId_{{ i }}"
-                              >Ingredient
-                              <span class="text-danger">*</span></label
-                            >
-                            <select
-                              id="ingredientId_{{ i }}"
-                              class="form-control"
-                              formControlName="ingredientId"
-                            >
-                              <option
-                                *ngFor="let ingredient of availableIngredients"
-                                [value]="ingredient.id"
-                              >
-                                {{ ingredient.name }}
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="row mt-2">
-                          <div class="col-md-6">
-                            <label for="measurementUnitId_{{ i }}"
-                              >Unit <span class="text-danger">*</span></label
-                            >
-                            <select
-                              id="measurementUnitId_{{ i }}"
-                              class="form-control"
-                              formControlName="measurementUnitId"
-                            >
-                              <option
-                                *ngFor="let unit of availableMeasurementUnits"
-                                [value]="unit.id"
-                              >
-                                {{ unit.name }}
-                              </option>
-                            </select>
-                          </div>
-                          <div class="col-md-6">
-                            <label for="amount_{{ i }}"
-                              >Amount <span class="text-danger">*</span></label
-                            >
-                            <input
-                              type="number"
-                              id="amount_{{ i }}"
-                              class="form-control"
-                              formControlName="amount"
-                              placeholder="Amount"
-                            />
-                          </div>
-                        </div>
-                        <div class="row mt-4">
-                          <div class="col-md-12 d-flex justify-content-end">
-                            <button
-                              type="button"
-                              class="btn btn-outline-danger btn-sm"
-                              (click)="removeRecipeIngredient(i)"
-                            >
-                              Remove
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        class="btn btn-outline-success mt-2"
-                        (click)="addRecipeIngredient()"
-                      >
-                        Add Ingredient
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="d-flex justify-content-end mt-4">
-          <button
-            type="submit"
-            class="btn btn-primary btn-lg"
-            [disabled]="!formGroup.valid || isCreating"
-          >
-            <span
-              *ngIf="isCreating"
-              class="spinner-border spinner-border-sm"
-            ></span>
-            {{ isCreating ? "Creating..." : "Create Recipe" }}
-          </button>
-        </div>
-      </form>
-    </div>
+  <div class="text-center mb-5">
+    <h1 class="display-4">🥟 Create a Tasty Recipe</h1>
+    <p class="lead text-muted">
+      Share your delicious creations with Meal Master! Create, manage, and share
+      your favorite recipes with ease. Start by filling in the details below.
+    </p>
   </div>
+
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <div class="d-flex flex-column gap-3">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="form-group">
+            <label for="title" class="form-label"
+              >Recipe Title <span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              id="title"
+              class="form-control"
+              formControlName="title"
+              placeholder="Enter the recipe title"
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="servingSize" class="form-label"
+              >Serving Size <span class="text-danger">*</span></label
+            >
+            <input
+              type="number"
+              id="servingSize"
+              class="form-control"
+              formControlName="servingSize"
+              placeholder="Number of servings"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="description" class="form-label"
+              >Recipe Description <span class="text-danger">*</span></label
+            >
+            <textarea
+              id="description"
+              class="form-control"
+              formControlName="description"
+              rows="4"
+              placeholder="Describe your recipe"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="coverImgUrl" class="form-label"
+              >Cover Image URL <span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              id="coverImgUrl"
+              class="form-control"
+              formControlName="coverImgUrl"
+              placeholder="Enter image URL for your recipe cover"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-6 mb-3">
+        <div class="accordion" id="instructionsAccordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="instructionsHeading">
+              <button
+                class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#instructionsCollapse"
+                aria-expanded="true"
+                aria-controls="instructionsCollapse"
+              >
+                <fa-icon [icon]="solidIcons.faList" class="me-2" /> Instructions
+                ({{ instructionsFormArray.length }})
+              </button>
+            </h2>
+            <div
+              id="instructionsCollapse"
+              class="accordion-collapse collapse show"
+              aria-labelledby="instructionsHeading"
+              data-bs-parent="#instructionsAccordion"
+            >
+              <div class="accordion-body">
+                <div formArrayName="instructions">
+                  <div
+                    *ngFor="
+                      let instruction of instructionsFormArray.controls;
+                      let i = index
+                    "
+                    [formGroupName]="i"
+                    class="form-group p-3 border rounded mb-3 shadow-sm"
+                  >
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <span class="badge bg-info">Step {{ i + 1 }}</span>
+                      <div>
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary btn-sm me-2"
+                          (click)="moveInstructionUp(i)"
+                          [disabled]="i === 0"
+                        >
+                          <fa-icon [icon]="solidIcons.faArrowUp" />
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary btn-sm"
+                          (click)="moveInstructionDown(i)"
+                          [disabled]="i === instructionsFormArray.length - 1"
+                        >
+                          <fa-icon [icon]="solidIcons.faArrowDown" />
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-12">
+                        <label for="timeEstimate_{{ i }}"
+                          >Time Estimate (minutes)
+                          <span class="text-danger">*</span></label
+                        >
+                        <input
+                          type="number"
+                          id="timeEstimate_{{ i }}"
+                          class="form-control"
+                          formControlName="timeEstimate"
+                          placeholder="Minutes"
+                        />
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-12">
+                        <label for="text_{{ i }}"
+                          >Instruction Text
+                          <span class="text-danger">*</span></label
+                        >
+                        <textarea
+                          id="text_{{ i }}"
+                          class="form-control"
+                          formControlName="text"
+                          rows="1"
+                          placeholder="Describe this step"
+                        ></textarea>
+                      </div>
+                    </div>
+                    <div class="row mt-4">
+                      <div class="col-md-12 d-flex justify-content-end">
+                        <button
+                          type="button"
+                          class="btn btn-outline-danger btn-sm"
+                          (click)="removeInstruction(i)"
+                        >
+                          <fa-icon [icon]="solidIcons.faTrashAlt"></fa-icon>
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-outline-success mt-2"
+                    (click)="addInstruction()"
+                  >
+                    <fa-icon [icon]="solidIcons.faPlus" /> Add Instruction
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="accordion" id="ingredientsAccordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="ingredientsHeading">
+              <button
+                class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#ingredientsCollapse"
+                aria-expanded="true"
+                aria-controls="ingredientsCollapse"
+              >
+                <fa-icon [icon]="solidIcons.faMortarPestle" class="me-2" />
+                Ingredients ({{ recipeIngredientsFormArray.length }})
+              </button>
+            </h2>
+            <div
+              id="ingredientsCollapse"
+              class="accordion-collapse collapse show"
+              aria-labelledby="ingredientsHeading"
+              data-bs-parent="#ingredientsAccordion"
+            >
+              <div class="accordion-body">
+                <div formArrayName="recipeIngredients">
+                  <div
+                    *ngFor="
+                      let ingredient of recipeIngredientsFormArray.controls;
+                      let i = index
+                    "
+                    [formGroupName]="i"
+                    class="form-group p-3 border rounded mb-3 shadow-sm"
+                  >
+                    <div class="d-flex align-items-center" style="height: 31px">
+                      <span class="badge bg-warning"
+                        >Ingredient {{ i + 1 }}</span
+                      >
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-12">
+                        <label for="ingredientId_{{ i }}"
+                          >Ingredient <span class="text-danger">*</span></label
+                        >
+                        <select
+                          id="ingredientId_{{ i }}"
+                          class="form-control"
+                          formControlName="ingredientId"
+                        >
+                          <option
+                            *ngFor="let ingredient of availableIngredients"
+                            [value]="ingredient.id"
+                          >
+                            {{ ingredient.name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-6">
+                        <label for="measurementUnitId_{{ i }}"
+                          >Unit <span class="text-danger">*</span></label
+                        >
+                        <select
+                          id="measurementUnitId_{{ i }}"
+                          class="form-control"
+                          formControlName="measurementUnitId"
+                        >
+                          <option
+                            *ngFor="let unit of availableMeasurementUnits"
+                            [value]="unit.id"
+                          >
+                            {{ unit.name }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="amount_{{ i }}"
+                          >Amount <span class="text-danger">*</span></label
+                        >
+                        <input
+                          type="number"
+                          id="amount_{{ i }}"
+                          class="form-control"
+                          formControlName="amount"
+                          placeholder="Amount"
+                        />
+                      </div>
+                    </div>
+                    <div class="row mt-4">
+                      <div class="col-md-12 d-flex justify-content-end">
+                        <button
+                          type="button"
+                          class="btn btn-outline-danger btn-sm"
+                          (click)="removeRecipeIngredient(i)"
+                        >
+                          <fa-icon [icon]="solidIcons.faTrashAlt" /> Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-outline-success mt-2"
+                    (click)="addRecipeIngredient()"
+                  >
+                    <fa-icon [icon]="solidIcons.faPlus" /> Add Ingredient
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between mt-4">
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        routerLink="/recipes"
+      >
+        <fa-icon [icon]="solidIcons.faArrowLeft"></fa-icon> Back to Recipes
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="!formGroup.valid"
+      >
+        <fa-icon [icon]="solidIcons.faCheck"></fa-icon> Save Recipe
+      </button>
+    </div>
+  </form>
 </div>

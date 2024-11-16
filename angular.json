@@ -26,13 +26,16 @@
             ],
             "styles": [
               "node_modules/ngx-toastr/toastr.css",
-
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "node_modules/ngx-sharebuttons/themes/circles.scss",
               "node_modules/ngx-sharebuttons/themes/modern.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/theme-overrides.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -92,13 +95,16 @@
             ],
             "styles": [
               "node_modules/ngx-toastr/toastr.css",
-
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "node_modules/ngx-sharebuttons/themes/circles.scss",
               "node_modules/ngx-sharebuttons/themes/modern.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/theme-overrides.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
           }
         }
       }

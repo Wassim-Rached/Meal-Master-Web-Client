@@ -14,11 +14,21 @@ import {
 import { RecipeCardComponent } from '../../components/recipe-card/recipe-card.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  faArrowLeft,
+  faArrowRight,
+  faClock,
+  faFilter,
+  faSearch,
+  faSort,
+  faUsers,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-search-and-filter',
   standalone: true,
-  imports: [SharedModule, RecipeCardComponent],
+  imports: [SharedModule, RecipeCardComponent, FontAwesomeModule],
   templateUrl: './search-and-filter.component.html',
   styleUrls: ['./search-and-filter.component.css'],
 })
@@ -137,6 +147,13 @@ export class SearchAndFilterComponent implements OnInit, AfterViewInit {
   changePage(page: number) {
     this.searchFormGroup.patchValue({ page });
     this.onSubmitSearchForm();
+  }
+
+  get solidIcons() {
+    return {
+      faSearch,
+      faFilter,
+    };
   }
 }
 

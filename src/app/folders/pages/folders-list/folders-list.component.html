@@ -14,7 +14,7 @@
     <!-- Page Title -->
     <div class="text-center mb-5">
       <h1 class="display-4">📂 My Folders</h1>
-      <p class="lead text-muted">
+      <p class="lead text-muted pe-5 ps-5">
         Organize your folders efficiently! Create, search, and manage all
         folders in one place. Use folders to plan meals with the
         <a routerLink="/schedules" style="text-decoration: none">
@@ -91,6 +91,7 @@
               type="button"
               class="btn btn-success shadow-sm"
               (click)="onCreateFolder(folderName.value)"
+              [disabled]="isCreatingFolder"
             >
               <span class="me-2">
                 {{ isCreatingFolder ? "Save Folder..." : "Save Folder" }}
@@ -122,11 +123,11 @@
         *ngIf="
           (foldersList && foldersList.length === 0) || folders?.length === 0
         "
-        class="alert alert-info text-center mt-4"
+        class="alert alert-info text-center mt-4 shadow-sm rounded p-4"
         role="alert"
       >
-        <h4 class="alert-heading">No Folders Found</h4>
-        <p class="mb-0" *ngIf="!folders">
+        <h4 class="alert-heading text-primary mb-3">No Folders Found</h4>
+        <p class="mb-0 text-muted">
           It looks like you haven't created any folders yet. Start organizing
           your meals by creating a new folder above.
         </p>

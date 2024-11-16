@@ -58,8 +58,13 @@
     <div class="d-flex justify-content-start align-items-center mt-auto">
       <!-- Favorite/Unfavorite Button -->
       <button
-        class="btn btn-outline-danger btn-sm d-flex align-items-center shadow-sm px-3 py-2"
+        class="btn btn-sm d-flex align-items-center shadow-sm px-3 py-2"
         (click)="toggleFavorite()"
+        [disabled]="isLoadingFavorite"
+        [ngClass]="{
+          'btn-outline-danger': !isFavorite,
+          'btn-danger': isFavorite
+        }"
       >
         <fa-icon
           [icon]="isFavorite ? solidIcons.faHeartBroken : solidIcons.faHeart"

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RecomendationsComponent } from '../../recipes/components/recomendations/recomendations.component';
 import { SharedModule } from '../../shared-module/shared-module.module';
-import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faStar,
@@ -27,6 +27,7 @@ export class HomeComponent {
       faCalendarAlt,
       faUtensils,
       faClipboardList,
+      faSearch,
     };
   }
 }

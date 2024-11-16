@@ -55,4 +55,12 @@ export class SigninComponent implements OnInit {
       },
     });
   }
+
+  get username() {
+    return this.formGroup.get('username');
+  }
+
+  get password() {
+    return this.formGroup.get('password');
+  }
 }

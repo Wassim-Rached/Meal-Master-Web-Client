@@ -13,98 +13,138 @@
     <div class="container mt-5 recipe-details">
       <div class="row">
         <div class="col-lg-7">
-          <img
-            *ngIf="recipe.coverImgUrl"
-            [src]="recipe.coverImgUrl"
-            class="img-fluid rounded shadow-sm w-100 mb-4"
-            style="max-height: 100%; object-fit: cover"
-            alt="{{ recipe.title }} cover image"
-          />
+          <!-- Recipe Image -->
+          <div class="mb-3">
+            <img
+              *ngIf="recipe.coverImgUrl"
+              [src]="recipe.coverImgUrl"
+              class="img-fluid rounded shadow-sm"
+              style="width: 100%"
+              alt="{{ recipe.title }} cover image"
+            />
+          </div>
 
+          <!-- Recipe Title and Metadata -->
           <div
-            class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mt-3 mb-2"
+            class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3"
           >
-            <div>
-              <h4 class="mb-1 text-uppercase text-primary">
-                {{ recipe.title }}
-              </h4>
-              <p class="text-muted mb-1">
-                by <strong>{{ recipe.owner.username }}</strong>
-              </p>
-              <div class="d-flex gap-2">
-                <a
-                  [routerLink]="['/recipes/update', recipe.id]"
-                  class="btn btn-outline-primary btn-sm"
-                >
-                  Update
-                </a>
-                <button
-                  class="btn btn-danger btn-sm"
-                  (click)="isDeleting ? null : deleteRecipe()"
-                  [disabled]="isDeleting"
-                >
-                  <span
-                    *ngIf="isDeleting"
-                    class="spinner-border spinner-border-sm"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                  <span *ngIf="!isDeleting">Delete Recipe</span>
-                </button>
+            <div class="d-flex align-items-center">
+              <!-- Owner Avatar -->
+              <img
+                *ngIf="recipe.owner.avatarUrl"
+                [src]="recipe.owner.avatarUrl"
+                class="rounded-circle me-3"
+                style="width: 50px; height: 50px; object-fit: cover"
+                alt="{{ recipe.owner.username }} avatar"
+              />
+              <div>
+                <h4 class="text-uppercase text-dark mb-1">
+                  {{ recipe.title }}
+                </h4>
+                <p class="text-muted mb-0">
+                  <i class="bi bi-person-fill me-2"></i>by
+                  <strong>{{ recipe.owner.username }}</strong>
+                </p>
               </div>
             </div>
+            <div class="d-flex gap-2 mt-3 mt-md-0" *ngIf="isOwner">
+              <a
+                [routerLink]="['/recipes/update', recipe.id]"
+                class="btn btn-outline-primary btn-sm"
+              >
+                <i class="bi bi-pencil-fill me-1"></i> Update
+              </a>
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="isDeleting ? null : deleteRecipe()"
+                [disabled]="isDeleting"
+              >
+                <span
+                  *ngIf="isDeleting"
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                <span *ngIf="!isDeleting">
+                  <i class="bi bi-trash-fill me-1"></i> Delete
+                </span>
+              </button>
+            </div>
+          </div>
 
-            <div class="d-flex gap-3 mt-3 mt-md-0">
-              <div class="favorite-button" *ngIf="isFavorite !== undefined">
+          <div class="d-flex gap-3 mb-3">
+            <span class="badge bg-primary">
+              <i class="bi bi-clock-fill me-1"></i> {{ recipe.cookingTime }} min
+            </span>
+            <span class="badge bg-success">
+              <i class="bi bi-people-fill me-1"></i>
+              {{ recipe.servingSize }} servings
+            </span>
+          </div>
+
+          <!-- Actions (Favorites, Folders, Share) -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex gap-2">
+              <!-- Favorite Button -->
+              <div *ngIf="isFavorite !== undefined">
                 <button
-                  class="btn d-flex align-items-center"
+                  class="btn"
                   [ngClass]="isFavorite ? 'btn-danger' : 'btn-outline-primary'"
                   (click)="
                     isFavorite
                       ? removeFromFavorites(recipe)
                       : addToFavorites(recipe)
                   "
+                  [disabled]="isLoadingFavorite"
                 >
-                  <ng-container *ngIf="isFavorite; else emptyHeart">
-                    <i class="bi bi-heart-fill me-2"></i> Remove from Favorites
+                  <ng-container *ngIf="isLoadingFavorite; else favoriteContent">
+                    <span
+                      class="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
                   </ng-container>
-                  <ng-template #emptyHeart>
-                    <i class="bi bi-heart me-2"></i> Add to Favorites
+                  <ng-template #favoriteContent>
+                    <ng-container *ngIf="isFavorite; else emptyHeart">
+                      <i class="bi bi-heart-fill me-1"></i> Remove from
+                      Favorites
+                    </ng-container>
+                    <ng-template #emptyHeart>
+                      <i class="bi bi-heart me-1"></i> Add to Favorites
+                    </ng-template>
                   </ng-template>
                 </button>
               </div>
 
-              <div class="folder-button" *ngIf="folders !== undefined">
-                <div class="dropdown">
-                  <button
-                    class="btn btn-outline-secondary dropdown-toggle d-flex align-items-center"
-                    type="button"
-                    id="folderDropdown"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i class="bi bi-folder2 me-2"></i> Add to Folder
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="folderDropdown">
-                    <li *ngFor="let folder of folders">
-                      <span
-                        class="dropdown-item"
-                        [ngClass]="{ 'text-success': isInFolder(folder.id) }"
-                        (click)="toggleFolder(folder.id)"
-                      >
-                        {{ folder.name }}
-                        <span *ngIf="isInFolder(folder.id)" class="ms-2">
-                          <i class="bi bi-check-circle-fill"></i>
-                        </span>
+              <!-- Folder Dropdown -->
+              <div *ngIf="folders !== undefined" class="dropdown">
+                <button
+                  class="btn btn-outline-secondary dropdown-toggle"
+                  type="button"
+                  id="folderDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="bi bi-folder2 me-1"></i> Add to Folder
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="folderDropdown">
+                  <li *ngFor="let folder of folders">
+                    <span
+                      class="dropdown-item"
+                      [ngClass]="{ 'text-success': isInFolder(folder.id) }"
+                      (click)="toggleFolder(folder.id)"
+                    >
+                      {{ folder.name }}
+                      <span *ngIf="isInFolder(folder.id)" class="ms-2">
+                        <i class="bi bi-check-circle-fill"></i>
                       </span>
-                    </li>
-                  </ul>
-                </div>
+                    </span>
+                  </li>
+                </ul>
               </div>
             </div>
-          </div>
 
-          <div class="mb-4">
+            <!-- Share Buttons -->
             <share-buttons
               class="p-0"
               theme="circles-dark"
@@ -119,52 +159,120 @@
               [showText]="false"
               [url]="shareUrl"
               [description]="shareDescription"
-              class="pt-5"
             ></share-buttons>
           </div>
 
-          <p class="fs-5 ps-2">{{ recipe.description }}</p>
+          <!-- Recipe Description -->
+          <p class="fs-6 text-muted mb-4 ps-3">
+            {{ recipe.description }}
+          </p>
 
-          <div class="recipe-meta mb-4">
-            <p>
-              <strong>Cooking Time:</strong> {{ recipe.cookingTime }} minutes
-            </p>
-            <p>
-              <strong>Serving Size:</strong> {{ recipe.servingSize }} people
-            </p>
-          </div>
-
-          <h2 class="h4">Ingredients</h2>
-          <ul class="list-group mb-4">
-            <li
-              *ngFor="let ingredient of recipe.recipeIngredients"
-              class="list-group-item d-flex justify-content-between align-items-center"
-            >
-              <span>
-                {{ ingredient.amount }}
-                {{ ingredient.measurementUnit.name }} of
-                {{ ingredient.ingredient.name }}
-              </span>
-            </li>
-          </ul>
+          <!-- Recipe Meta Data with Badges -->
         </div>
 
         <div class="col-lg-5">
-          <h2 class="h4">Instructions</h2>
-          <ol class="list-group list-group-numbered">
-            <li
-              *ngFor="let instruction of recipe.instructions"
-              class="list-group-item d-flex justify-content-between align-items-start"
-            >
-              <div class="ms-2 me-auto">
-                <div class="fw-bold">Step {{ instruction.stepNumber }}</div>
-                {{ instruction.text }}
-              </div>
-              <span class="badge bg-primary rounded-pill">
-                {{ instruction.timeEstimate }} min
-              </span>
+          <!-- Tabs Navigation -->
+          <ul class="nav nav-tabs mb-4" id="recipeTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link active"
+                id="instructions-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#instructions"
+                type="button"
+                role="tab"
+                aria-controls="instructions"
+                aria-selected="true"
+              >
+                <fa-icon [icon]="solidIcons.faListUl" class="me-2"></fa-icon>
+                Instructions
+              </button>
             </li>
-          </ol>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="ingredients-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#ingredients"
+                type="button"
+                role="tab"
+                aria-controls="ingredients"
+                aria-selected="false"
+              >
+                <fa-icon [icon]="solidIcons.faUtensils" class="me-2"></fa-icon>
+                Ingredients
+              </button>
+            </li>
+          </ul>
+
+          <!-- Tabs Content -->
+          <div class="tab-content" id="recipeTabsContent">
+            <!-- Instructions Tab Pane -->
+            <div
+              class="tab-pane fade show active"
+              id="instructions"
+              role="tabpanel"
+              aria-labelledby="instructions-tab"
+            >
+              <div class="list-group">
+                <li
+                  *ngFor="let instruction of recipe.instructions"
+                  class="list-group-item d-flex justify-content-between bg-light align-items-start border-0 mb-3 shadow-sm rounded"
+                >
+                  <div class="ms-2 me-auto">
+                    <div class="d-flex align-items-center mb-2">
+                      <!-- Step Icon -->
+                      <fa-icon
+                        [icon]="solidIcons.faArrowRight"
+                        class="text-primary me-2"
+                      ></fa-icon>
+                      <div class="fw-bold">
+                        Step {{ instruction.stepNumber }}
+                      </div>
+                    </div>
+                    <p class="mb-0 fw-light fst-italic">
+                      {{ instruction.text }}
+                    </p>
+                  </div>
+                  <!-- Time Icon -->
+                  <span class="badge bg-secondary rounded-pill">
+                    <fa-icon [icon]="solidIcons.faClock" class="me-1"></fa-icon>
+                    {{ instruction.timeEstimate }} min
+                  </span>
+                </li>
+              </div>
+            </div>
+
+            <!-- Ingredients Tab Pane -->
+            <div
+              class="tab-pane fade"
+              id="ingredients"
+              role="tabpanel"
+              aria-labelledby="ingredients-tab"
+            >
+              <ul class="list-group mb-4">
+                <li
+                  *ngFor="let ingredient of recipe.recipeIngredients"
+                  class="list-group-item d-flex justify-content-between align-items-center bg-light border-0 shadow-sm rounded mb-2"
+                >
+                  <div class="d-flex align-items-center">
+                    <!-- Ingredient Icon -->
+                    <fa-icon
+                      [icon]="solidIcons.faMortarPestle"
+                      class="text-success me-3"
+                    ></fa-icon>
+                    <span>
+                      <strong>{{ ingredient.amount }}</strong>
+                      {{ ingredient.measurementUnit.name }} of
+                      <span class="text-uppercase">{{
+                        ingredient.ingredient.name
+                      }}</span>
+                    </span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>

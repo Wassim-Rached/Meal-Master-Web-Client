@@ -17,11 +17,23 @@ import {
 import { SharedModule } from '../../../shared-module/shared-module.module';
 import { ToastrService } from 'ngx-toastr';
 import { MessagesService } from '../../../shared-module/services/messages.service';
+import {
+  faArrowDown,
+  faArrowLeft,
+  faArrowUp,
+  faCarrot,
+  faCheck,
+  faList,
+  faMortarPestle,
+  faPlus,
+  faTrashAlt,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-create-recipe',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, FontAwesomeModule],
   templateUrl: './create-recipe.component.html',
   styleUrl: './create-recipe.component.css',
 })
@@ -188,5 +200,22 @@ export class CreateRecipeComponent implements OnInit {
     const temp = instructions[index];
     instructions[index] = instructions[index + 1];
     instructions[index + 1] = temp;
+  }
+
+  get solidIcons() {
+    return {
+      faArrowDown,
+      faArrowUp,
+      faPlus,
+      faTrashAlt,
+      faArrowLeft,
+      faCheck,
+      faMortarPestle,
+      faList,
+    };
+  }
+
+  get imageUrl() {
+    return this.formGroup.get('coverImgUrl')?.value;
   }
 }
