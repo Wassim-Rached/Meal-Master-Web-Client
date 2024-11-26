@@ -151,9 +151,6 @@ export class CreateRecipeComponent implements OnInit {
 
   // submit form
   onSubmit() {
-    // log the problem
-    if (!this.formGroup.valid) return;
-
     const body = this.formGroup.value;
 
     const cookingTime = body.instructions.reduce(

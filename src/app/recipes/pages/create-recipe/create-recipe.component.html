@@ -309,11 +309,7 @@
       >
         <fa-icon [icon]="solidIcons.faArrowLeft"></fa-icon> Back to Recipes
       </button>
-      <button
-        type="submit"
-        class="btn btn-primary"
-        [disabled]="!formGroup.valid"
-      >
+      <button type="submit" class="btn btn-primary" [disabled]="isCreating">
         <fa-icon [icon]="solidIcons.faCheck"></fa-icon> Save Recipe
       </button>
     </div>

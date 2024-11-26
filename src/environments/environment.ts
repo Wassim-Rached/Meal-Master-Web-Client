@@ -7,7 +7,8 @@ import packageInfo from '../../package.json';
 export const environment = {
   appVersion: packageInfo.version,
   production: true,
-  backendUrl: 'http://localhost:8080',
+  // backendUrl: 'http://localhost:8080',
+  backendUrl: 'https://meal-master.azurewebsites.net',
   messageDisplayDurationInMs: 10000,
 };
 /*
